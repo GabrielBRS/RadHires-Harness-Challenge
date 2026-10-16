@@ -1,0 +1,8 @@
+flask>=3.0
+pdfplumber>=0.11
+pypdfium2>=4.0
+pydantic>=2.6
+requests>=2.31
+# only needed to regenerate the synthetic sample data (data/generate.py)
+reportlab>=4.0
+pillow>=10.0

@@ -1,0 +1,311 @@
+{
+  "extractor": "baseline",
+  "model": null,
+  "invoices": 17,
+  "decision_accuracy": 0.5294117647058824,
+  "unsafe_approvals": 0,
+  "needless_flags": 5,
+  "field_accuracy": 0.625,
+  "avg_seconds": 0.03,
+  "issues": {
+    "DUPLICATE_INVOICE": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    },
+    "EXTRACTION_FAILED": {
+      "tp": 0,
+      "fp": 3,
+      "fn": 0
+    },
+    "ITEM_NOT_ON_PO": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 1
+    },
+    "MATH_ERROR": {
+      "tp": 1,
+      "fp": 1,
+      "fn": 0
+    },
+    "MISSING_FIELD": {
+      "tp": 0,
+      "fp": 5,
+      "fn": 0
+    },
+    "POSSIBLE_DUPLICATE": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    },
+    "PO_NOT_FOUND": {
+      "tp": 0,
+      "fp": 5,
+      "fn": 1
+    },
+    "PRICE_VARIANCE": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 1
+    },
+    "QTY_EXCEEDS_RECEIVED": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0
+    },
+    "UNREADABLE": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    }
+  },
+  "rows": [
+    {
+      "file": "01_halvorsen_clean.pdf",
+      "layout": "A",
+      "want": "approve",
+      "got": "approve",
+      "want_issues": [],
+      "got_issues": [],
+      "seconds": 0.03,
+      "unsafe": false,
+      "headline": "Matches PO-45000110 and what the warehouse received. OK to pay $1,001.79."
+    },
+    {
+      "file": "02_ridgeline_clean.pdf",
+      "layout": "B",
+      "want": "approve",
+      "got": "hold",
+      "want_issues": [],
+      "got_issues": [
+        "MISSING_FIELD",
+        "PO_NOT_FOUND"
+      ],
+      "seconds": 0.02,
+      "unsafe": false,
+      "headline": "No matching purchase order."
+    },
+    {
+      "file": "03_halvorsen_price_up.pdf",
+      "layout": "A",
+      "want": "review",
+      "got": "review",
+      "want_issues": [
+        "PRICE_VARIANCE"
+      ],
+      "got_issues": [
+        "PRICE_VARIANCE"
+      ],
+      "seconds": 0.02,
+      "unsafe": false,
+      "headline": "Charged more than the agreed price \u00b7 $15.00 in question."
+    },
+    {
+      "file": "04_halvorsen_short_delivery.pdf",
+      "layout": "A",
+      "want": "review",
+      "got": "review",
+      "want_issues": [
+        "QTY_EXCEEDS_RECEIVED"
+      ],
+      "got_issues": [
+        "QTY_EXCEEDS_RECEIVED"
+      ],
+      "seconds": 0.02,
+      "unsafe": false,
+      "headline": "Billed for more than we received \u00b7 $109.60 in question."
+    },
+    {
+      "file": "05_ridgeline_surcharge.pdf",
+      "layout": "B",
+      "want": "review",
+      "got": "hold",
+      "want_issues": [
+        "ITEM_NOT_ON_PO"
+      ],
+      "got_issues": [
+        "MISSING_FIELD",
+        "PO_NOT_FOUND"
+      ],
+      "seconds": 0.03,
+      "unsafe": false,
+      "headline": "No matching purchase order."
+    },
+    {
+      "file": "06_ridgeline_math_error.pdf",
+      "layout": "B",
+      "want": "review",
+      "got": "hold",
+      "want_issues": [
+        "MATH_ERROR"
+      ],
+      "got_issues": [
+        "MATH_ERROR",
+        "MISSING_FIELD",
+        "PO_NOT_FOUND"
+      ],
+      "seconds": 0.04,
+      "unsafe": false,
+      "headline": "No matching purchase order."
+    },
+    {
+      "file": "07_halvorsen_resent_duplicate.pdf",
+      "layout": "A",
+      "want": "hold",
+      "got": "hold",
+      "want_issues": [
+        "DUPLICATE_INVOICE"
+      ],
+      "got_issues": [
+        "DUPLICATE_INVOICE"
+      ],
+      "seconds": 0.03,
+      "unsafe": false,
+      "headline": "This invoice was already processed."
+    },
+    {
+      "file": "08_kowalski_no_po.pdf",
+      "layout": "C",
+      "want": "hold",
+      "got": "review",
+      "want_issues": [
+        "PO_NOT_FOUND"
+      ],
+      "got_issues": [
+        "EXTRACTION_FAILED"
+      ],
+      "seconds": 0.03,
+      "unsafe": false,
+      "headline": "Couldn't make sense of this invoice."
+    },
+    {
+      "file": "09_kowalski_clean.pdf",
+      "layout": "C",
+      "want": "approve",
+      "got": "review",
+      "want_issues": [],
+      "got_issues": [
+        "EXTRACTION_FAILED"
+      ],
+      "seconds": 0.04,
+      "unsafe": false,
+      "headline": "Couldn't make sense of this invoice."
+    },
+    {
+      "file": "10_kowalski_price_up.pdf",
+      "layout": "C",
+      "want": "review",
+      "got": "review",
+      "want_issues": [
+        "PRICE_VARIANCE"
+      ],
+      "got_issues": [
+        "EXTRACTION_FAILED"
+      ],
+      "seconds": 0.03,
+      "unsafe": false,
+      "headline": "Couldn't make sense of this invoice."
+    },
+    {
+      "file": "11_halvorsen_partial_billing.pdf",
+      "layout": "A",
+      "want": "approve",
+      "got": "approve",
+      "want_issues": [],
+      "got_issues": [],
+      "seconds": 0.03,
+      "unsafe": false,
+      "headline": "Matches PO-45000140 and what the warehouse received. OK to pay $158.36."
+    },
+    {
+      "file": "12_ridgeline_name_variant.pdf",
+      "layout": "B",
+      "want": "approve",
+      "got": "hold",
+      "want_issues": [],
+      "got_issues": [
+        "MISSING_FIELD",
+        "PO_NOT_FOUND"
+      ],
+      "seconds": 0.02,
+      "unsafe": false,
+      "headline": "No matching purchase order."
+    },
+    {
+      "file": "13_halvorsen_missing_sku.pdf",
+      "layout": "A",
+      "want": "approve",
+      "got": "review",
+      "want_issues": [],
+      "got_issues": [
+        "MATH_ERROR"
+      ],
+      "seconds": 0.04,
+      "unsafe": false,
+      "headline": "Lines don't add up to the subtotal \u00b7 $462.50 in question."
+    },
+    {
+      "file": "14_halvorsen_two_problems.pdf",
+      "layout": "A",
+      "want": "review",
+      "got": "review",
+      "want_issues": [
+        "PRICE_VARIANCE",
+        "QTY_EXCEEDS_RECEIVED"
+      ],
+      "got_issues": [
+        "PRICE_VARIANCE",
+        "QTY_EXCEEDS_RECEIVED"
+      ],
+      "seconds": 0.02,
+      "unsafe": false,
+      "headline": "Charged more than the agreed price (+1 more) \u00b7 $118.00 in question."
+    },
+    {
+      "file": "15_ridgeline_price_down.pdf",
+      "layout": "B",
+      "want": "approve",
+      "got": "hold",
+      "want_issues": [],
+      "got_issues": [
+        "MISSING_FIELD",
+        "PO_NOT_FOUND"
+      ],
+      "seconds": 0.02,
+      "unsafe": false,
+      "headline": "No matching purchase order."
+    },
+    {
+      "file": "16_halvorsen_reissued.pdf",
+      "layout": "A",
+      "want": "hold",
+      "got": "hold",
+      "want_issues": [
+        "POSSIBLE_DUPLICATE",
+        "QTY_EXCEEDS_RECEIVED"
+      ],
+      "got_issues": [
+        "POSSIBLE_DUPLICATE",
+        "QTY_EXCEEDS_RECEIVED"
+      ],
+      "seconds": 0.02,
+      "unsafe": false,
+      "headline": "Looks like a re-issue of an invoice we already have."
+    },
+    {
+      "file": "17_scanned_fax.pdf",
+      "layout": "SCAN",
+      "want": "review",
+      "got": "review",
+      "want_issues": [
+        "UNREADABLE"
+      ],
+      "got_issues": [
+        "UNREADABLE"
+      ],
+      "seconds": 0.0,
+      "unsafe": false,
+      "headline": "Couldn't read this PDF."
+    }
+  ]
+}

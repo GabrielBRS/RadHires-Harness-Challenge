@@ -1,0 +1,369 @@
+[
+  {
+    "po_number": "PO-45000105",
+    "supplier_id": "S001",
+    "order_date": "2026-09-08",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "HB-100",
+        "description": "Hex bolts 3/8 x 4in (box of 50)",
+        "qty_ordered": 10,
+        "qty_received": 10,
+        "unit_price": 21.15
+      }
+    ],
+    "supplier_name": "Halvorsen Fasteners LLC",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000106",
+    "supplier_id": "S001",
+    "order_date": "2026-09-15",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "WS-050",
+        "description": "Flat washers 1/2in (box of 100)",
+        "qty_ordered": 20,
+        "qty_received": 20,
+        "unit_price": 9.75
+      }
+    ],
+    "supplier_name": "Halvorsen Fasteners LLC",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000110",
+    "supplier_id": "S001",
+    "order_date": "2026-09-22",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "DS-300",
+        "description": "Exterior deck screws 3in, box of 350",
+        "qty_ordered": 20,
+        "qty_received": 20,
+        "unit_price": 18.5
+      },
+      {
+        "line": 2,
+        "sku": "LB-512",
+        "description": "Lag bolts 1/2 x 12in (box of 25)",
+        "qty_ordered": 10,
+        "qty_received": 10,
+        "unit_price": 42.0
+      },
+      {
+        "line": 3,
+        "sku": "WS-050",
+        "description": "Flat washers 1/2in (box of 100)",
+        "qty_ordered": 15,
+        "qty_received": 15,
+        "unit_price": 9.75
+      }
+    ],
+    "supplier_name": "Halvorsen Fasteners LLC",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000111",
+    "supplier_id": "S001",
+    "order_date": "2026-09-23",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "DS-250",
+        "description": "Exterior deck screws 2.5in, box of 350",
+        "qty_ordered": 30,
+        "qty_received": 30,
+        "unit_price": 16.2
+      },
+      {
+        "line": 2,
+        "sku": "AN-375",
+        "description": "Wedge anchors 3/8 x 3in (box of 25)",
+        "qty_ordered": 12,
+        "qty_received": 8,
+        "unit_price": 27.4
+      }
+    ],
+    "supplier_name": "Halvorsen Fasteners LLC",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000112",
+    "supplier_id": "S001",
+    "order_date": "2026-09-24",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "SS-200",
+        "description": "Stainless screws #10 x 2in (box of 100)",
+        "qty_ordered": 10,
+        "qty_received": 10,
+        "unit_price": 34.9
+      },
+      {
+        "line": 2,
+        "sku": "HB-100",
+        "description": "Hex bolts 3/8 x 4in (box of 50)",
+        "qty_ordered": 20,
+        "qty_received": 20,
+        "unit_price": 21.15
+      }
+    ],
+    "supplier_name": "Halvorsen Fasteners LLC",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000113",
+    "supplier_id": "S001",
+    "order_date": "2026-09-25",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "DS-300",
+        "description": "Exterior deck screws 3in, box of 350",
+        "qty_ordered": 25,
+        "qty_received": 25,
+        "unit_price": 18.5
+      },
+      {
+        "line": 2,
+        "sku": "LB-512",
+        "description": "Lag bolts 1/2 x 12in (box of 25)",
+        "qty_ordered": 6,
+        "qty_received": 6,
+        "unit_price": 42.0
+      }
+    ],
+    "supplier_name": "Halvorsen Fasteners LLC",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000114",
+    "supplier_id": "S001",
+    "order_date": "2026-09-28",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "SS-200",
+        "description": "Stainless screws #10 x 2in (box of 100)",
+        "qty_ordered": 12,
+        "qty_received": 12,
+        "unit_price": 34.9
+      },
+      {
+        "line": 2,
+        "sku": "AN-375",
+        "description": "Wedge anchors 3/8 x 3in (box of 25)",
+        "qty_ordered": 10,
+        "qty_received": 6,
+        "unit_price": 27.4
+      }
+    ],
+    "supplier_name": "Halvorsen Fasteners LLC",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000140",
+    "supplier_id": "S001",
+    "order_date": "2026-09-10",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "DS-300",
+        "description": "Exterior deck screws 3in, box of 350",
+        "qty_ordered": 20,
+        "qty_received": 20,
+        "unit_price": 18.5
+      }
+    ],
+    "supplier_name": "Halvorsen Fasteners LLC",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000120",
+    "supplier_id": "S002",
+    "order_date": "2026-09-21",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "PT-2612",
+        "description": "Pressure-treated lumber 2x6x12",
+        "qty_ordered": 40,
+        "qty_received": 40,
+        "unit_price": 14.85
+      },
+      {
+        "line": 2,
+        "sku": "PT-2412",
+        "description": "Pressure-treated lumber 2x4x12",
+        "qty_ordered": 60,
+        "qty_received": 60,
+        "unit_price": 9.6
+      },
+      {
+        "line": 3,
+        "sku": "CD-5408",
+        "description": "Cedar decking 5/4x6x8",
+        "qty_ordered": 50,
+        "qty_received": 50,
+        "unit_price": 17.3
+      }
+    ],
+    "supplier_name": "Ridgeline Lumber & Millwork",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000121",
+    "supplier_id": "S002",
+    "order_date": "2026-09-22",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "PLY-34",
+        "description": "Plywood 3/4in CDX 4x8",
+        "qty_ordered": 25,
+        "qty_received": 25,
+        "unit_price": 48.75
+      },
+      {
+        "line": 2,
+        "sku": "OSB-716",
+        "description": "OSB sheathing 7/16in 4x8",
+        "qty_ordered": 30,
+        "qty_received": 30,
+        "unit_price": 22.4
+      }
+    ],
+    "supplier_name": "Ridgeline Lumber & Millwork",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000122",
+    "supplier_id": "S002",
+    "order_date": "2026-09-24",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "TRM-114",
+        "description": "Primed pine trim 1x4x16",
+        "qty_ordered": 20,
+        "qty_received": 20,
+        "unit_price": 18.9
+      },
+      {
+        "line": 2,
+        "sku": "BB-358",
+        "description": "Colonial baseboard 3-5/8in x 16ft",
+        "qty_ordered": 15,
+        "qty_received": 15,
+        "unit_price": 24.6
+      }
+    ],
+    "supplier_name": "Ridgeline Lumber & Millwork",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000123",
+    "supplier_id": "S002",
+    "order_date": "2026-09-29",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "PT-2412",
+        "description": "Pressure-treated lumber 2x4x12",
+        "qty_ordered": 80,
+        "qty_received": 80,
+        "unit_price": 9.6
+      },
+      {
+        "line": 2,
+        "sku": "PLY-34",
+        "description": "Plywood 3/4in CDX 4x8",
+        "qty_ordered": 10,
+        "qty_received": 10,
+        "unit_price": 48.75
+      }
+    ],
+    "supplier_name": "Ridgeline Lumber & Millwork",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000124",
+    "supplier_id": "S002",
+    "order_date": "2026-09-30",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "CD-5408",
+        "description": "Cedar decking 5/4x6x8",
+        "qty_ordered": 40,
+        "qty_received": 40,
+        "unit_price": 17.3
+      }
+    ],
+    "supplier_name": "Ridgeline Lumber & Millwork",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000131",
+    "supplier_id": "S003",
+    "order_date": "2026-09-22",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "JH-206",
+        "description": "Joist hanger 2x6, galvanized",
+        "qty_ordered": 50,
+        "qty_received": 50,
+        "unit_price": 3.1
+      },
+      {
+        "line": 2,
+        "sku": "HT-12",
+        "description": "Hurricane tie H2.5A",
+        "qty_ordered": 40,
+        "qty_received": 40,
+        "unit_price": 1.85
+      },
+      {
+        "line": 3,
+        "sku": "PB-44",
+        "description": "Post base 4x4, adjustable",
+        "qty_ordered": 10,
+        "qty_received": 10,
+        "unit_price": 12.6
+      }
+    ],
+    "supplier_name": "Kowalski Hardware Supply",
+    "tax_rate": 0.07
+  },
+  {
+    "po_number": "PO-45000132",
+    "supplier_id": "S003",
+    "order_date": "2026-09-26",
+    "lines": [
+      {
+        "line": 1,
+        "sku": "CN-16D",
+        "description": "16d common nails, 50 lb box",
+        "qty_ordered": 6,
+        "qty_received": 6,
+        "unit_price": 79.0
+      },
+      {
+        "line": 2,
+        "sku": "RS-24",
+        "description": "Rafter tie RT-7",
+        "qty_ordered": 30,
+        "qty_received": 30,
+        "unit_price": 2.45
+      }
+    ],
+    "supplier_name": "Kowalski Hardware Supply",
+    "tax_rate": 0.07
+  }
+]

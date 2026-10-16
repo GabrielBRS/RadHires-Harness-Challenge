@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}{{ v.number or v.it.name }} · Invoice Check{% endblock %}
+{% block body %}
+<p class="crumbs"><a href="{{ url_for('inbox') }}">← Back to all invoices</a>
+  {% if next_id %} · <a href="{{ url_for('detail', iid=next_id) }}">Next invoice →</a>{% endif %}</p>
+
+<div class="split">
+  <section class="doc">
+    <div class="pages">
+      {% for n in range(pages) %}<img src="{{ url_for('page_image', iid=v.it.id, n=n) }}" alt="Invoice page {{ n + 1 }}">{% endfor %}
+    </div>
+    <p class="muted small"><a href="{{ url_for('pdf', iid=v.it.id) }}" target="_blank">Open the original PDF</a> · {{ v.it.name }}</p>
+  </section>
+
+  <section class="panel">
+    {% if not r %}
+      <div class="banner wait">{{ v.label }}</div>
+      {% if v.it.error %}<pre class="err">{{ v.it.error }}</pre>{% endif %}
+    {% else %}
+    <div class="banner {{ r.decision }}">
+      <span class="pill {{ r.decision }}">{{ labels[r.decision] }}</span>
+      <p>{{ r.headline }}</p>
+    </div>
+
+    {% if v.it.action %}
+    <div class="decided">
+      <b>{{ actions[v.it.action] }}</b> · {{ v.it.acted_at }}{% if v.it.note %} · “{{ v.it.note }}”{% endif %}
+      <form action="{{ url_for('act', iid=v.it.id) }}" method="post" class="inline">
+        <input type="hidden" name="action" value="undo"><button class="link">Undo</button></form>
+    </div>
+    {% endif %}
+
+    {% set real = r.issues|rejectattr('severity', 'equalto', 'info')|list %}
+    {% set fyi = r.issues|selectattr('severity', 'equalto', 'info')|list %}
+    {% if real %}
+    <h3>What to check</h3>
+    <ol class="issues">
+      {% for i in real %}
+      <li class="issue {{ i.severity }}">
+        <div class="issue-title">{{ i.title }}{% if i.amount_at_stake %} <span class="stake">{{ i.amount_at_stake|money }}</span>{% endif %}</div>
+        <div>{{ i.detail }}</div>
+        {% if i.next_step %}<div class="next"><b>What to do:</b> {{ i.next_step }}</div>{% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+    {% endif %}
+    {% for i in fyi %}<p class="fyi">ℹ︎ {{ i.detail }}</p>{% endfor %}
+
+    {% if ex %}
+    <h3>What I read from the invoice</h3>
+    <dl class="facts">
+      {% macro fact(label, key, value) %}
+        <div class="{{ 'unsure' if key in unconfirmed }}"><dt>{{ label }}</dt><dd>{{ value if value not in (None, '') else '—' }}
+          {% if key in unconfirmed %}<em>check this</em>{% endif %}</dd></div>
+      {% endmacro %}
+      {{ fact('Supplier', 'supplier_name', ex.supplier_name) }}
+      {{ fact('Invoice no.', 'invoice_number', ex.invoice_number) }}
+      {{ fact('Date', 'invoice_date', ex.invoice_date) }}
+      {{ fact('PO on invoice', 'po_number', ex.po_number) }}
+      {{ fact('Matched to', '_', r.po_number_matched) }}
+      {{ fact('Total due', 'total', ex.total|money if ex.total is not none else None) }}
+    </dl>
+
+    <table class="lines">
+      <thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Price</th><th class="num">Amount</th><th>Against the PO</th></tr></thead>
+      <tbody>
+      {% for row in line_rows %}
+        {% set ln = row.ln %}
+        <tr class="{{ 'flag' if row.issues|rejectattr('severity','equalto','info')|list }}">
+          <td>{{ ln.description }}{% if ln.sku %}<br><span class="mono muted">{{ ln.sku }}</span>{% endif %}</td>
+          <td class="num {{ 'unsure' if 'quantity' in row.unconfirmed }}">{{ ln.quantity|qty }}</td>
+          <td class="num {{ 'unsure' if 'unit_price' in row.unconfirmed }}">{{ ln.unit_price|money }}</td>
+          <td class="num {{ 'unsure' if 'line_total' in row.unconfirmed }}">{{ ln.line_total|money }}</td>
+          <td class="against">
+            {% if row.pl %}
+              PO price {{ row.pl.unit_price|money }} · received {{ row.pl.qty_received|qty }}
+              <br><span class="muted">{{ 'matched by item code' if row.m.method == 'sku' else 'matched by description (' ~ (row.m.score*100)|round|int ~ '% similar)' }}</span>
+            {% elif r.po_number_matched %}<span class="bad">not on the PO</span>
+            {% else %}<span class="muted">no PO to compare</span>{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr><td colspan="3">Subtotal</td><td class="num {{ 'unsure' if 'subtotal' in unconfirmed }}">{{ ex.subtotal|money }}</td><td></td></tr>
+        <tr><td colspan="3">Tax</td><td class="num {{ 'unsure' if 'tax' in unconfirmed }}">{{ ex.tax|money }}</td><td></td></tr>
+        <tr class="grand"><td colspan="3">Total due</td><td class="num {{ 'unsure' if 'total' in unconfirmed }}">{{ ex.total|money }}</td><td></td></tr>
+      </tfoot>
+    </table>
+    {% endif %}
+
+    {% if not v.it.action %}
+    <h3>Your decision</h3>
+    <form action="{{ url_for('act', iid=v.it.id) }}" method="post" class="decide">
+      <input type="hidden" name="next" value="{{ next_id or '' }}">
+      {% if needs_note %}
+      <label class="note {{ 'need' if request.args.get('need_note') }}">
+        Note <span class="muted">(required to approve a flagged invoice, e.g. “Dana confirmed new price”)</span>
+        <input name="note" autocomplete="off" placeholder="Why it's OK, or what you're waiting for">
+      </label>
+      {% else %}
+      <input type="hidden" name="note" value="">
+      {% endif %}
+      <div class="buttons">
+        <button class="btn {{ 'ghost' if r.decision != 'approve' }}" name="action" value="approved">Approve for payment</button>
+        {% if email %}<button type="button" class="btn {{ 'ghost' if r.decision == 'approve' }}" onclick="document.getElementById('mail').showModal()">Email the supplier…</button>{% endif %}
+        <button class="btn ghost" name="action" value="held">Put on hold</button>
+      </div>
+    </form>
+    {% endif %}
+
+    {% if email %}
+    <dialog id="mail">
+      <h3>Email to {{ ex.supplier_name if ex else 'supplier' }}</h3>
+      <p class="muted">Built only from the problems above. Edit freely, then copy it into your email.</p>
+      <label>Subject <input id="mail-subj" value="{{ email.subject }}"></label>
+      <label>Message <textarea id="mail-body" rows="14">{{ email.body }}</textarea></label>
+      <div class="buttons">
+        <button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('mail-subj').value + '\n\n' + document.getElementById('mail-body').value); this.textContent='Copied ✓'">Copy email</button>
+        <form action="{{ url_for('act', iid=v.it.id) }}" method="post" class="inline">
+          <input type="hidden" name="action" value="queried">
+          <input type="hidden" name="note" value="Emailed supplier">
+          <input type="hidden" name="next" value="{{ next_id or '' }}">
+          <button class="btn ghost">Mark as queried</button>
+        </form>
+        <button class="btn ghost" onclick="document.getElementById('mail').close()">Close</button>
+      </div>
+    </dialog>
+    {% endif %}
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+[
+  {
+    "supplier_id": "S001",
+    "invoice_number": "HF-10198",
+    "invoice_date": "2026-09-15",
+    "po_number": "PO-45000105",
+    "total": 226.31,
+    "lines": [
+      {
+        "sku": "HB-100",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "supplier_id": "S001",
+    "invoice_number": "HF-10171",
+    "invoice_date": "2026-09-28",
+    "po_number": "PO-45000106",
+    "total": 208.65,
+    "lines": [
+      {
+        "sku": "WS-050",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "supplier_id": "S001",
+    "invoice_number": "HF-10207",
+    "invoice_date": "2026-09-18",
+    "po_number": "PO-45000140",
+    "total": 237.54,
+    "lines": [
+      {
+        "sku": "DS-300",
+        "quantity": 12
+      }
+    ]
+  }
+]
