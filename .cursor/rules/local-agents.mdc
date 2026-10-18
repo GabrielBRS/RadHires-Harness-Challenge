@@ -1,0 +1,9 @@
+---
+description: Invoke the real local Qwen agents and preserve Rust/React feature boundaries
+alwaysApply: true
+---
+Follow root AGENTS.md and docs/AGENTS.md for implementation and invoice-processing tasks.
+Use `ai-backend/target/release/invoice-check agents list` for discovery and
+`ai-backend/target/release/invoice-check agents call check_invoice --input-file examples/check-invoice.json`
+for an actual local AI check. Inspect `ok`, `data.agent_runs` and `data.issues`.
+Never describe the demo, oracle or fake HTTP tests as live model inference.

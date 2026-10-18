@@ -1,0 +1,31 @@
+{
+  "model": "Qwen/Qwen3-4B",
+  "model_revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+  "runtime": "MAX 26.6.0",
+  "date": "2026-10-17",
+  "oracle": {
+    "correct": 17,
+    "total": 17,
+    "unsafe_approvals": 0
+  },
+  "fault_injection": {
+    "caught": 49,
+    "total": 49
+  },
+  "rust_integration_tests": 13,
+  "live": {
+    "correct": 10,
+    "total": 17,
+    "unsafe_approvals": 0,
+    "unnecessarily_flagged_clean_invoices": 7,
+    "completed_agent_calls": 30,
+    "failed_agent_calls": 1,
+    "total_agent_seconds": 66.4
+  },
+  "limits": [
+    "Synthetic fixtures only; same fixtures informed prompt adjustments. Not a held-out benchmark.",
+    "Verifier produces false positives on equivalent dates, currency/number formatting and descriptions.",
+    "One reader response had a null value where a numeric quantity or price was required.",
+    "No peak VRAM measurement. Windows/WSL and macOS not tested on native hardware."
+  ]
+}

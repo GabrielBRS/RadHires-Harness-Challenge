@@ -1,164 +1,146 @@
-# Invoice Check: design notes
+# Invoice Check: design and delivery notes
 
-## 1. The problem
+## Problem thesis
 
-**Who.** The accounts-payable specialist at a small or mid-size distributor, often a one- or
-two-person team. At our fictional Lumen Supply Co. (building supplies, 3 branches) that means a
-few hundred supplier invoices a week. Most arrive as PDFs by email from small suppliers who don't
-do EDI, and every supplier lays its invoice out differently.
+An accounts-payable clerk at a small distributor repeatedly transcribes supplier PDF invoices,
+then compares prices, receipt quantities and prior payments. Missing an exception can mean a
+duplicate payment or paying for goods that never arrived; checking everything manually is slow.
+For the fictional Lumen Supply Co., 250 invoices/week at three minutes each would consume 12.5
+hours. That is a sizing hypothesis, not measured customer data or a promised saving.
 
-**The job.** Before paying, AP does a *three-way match*: does the invoice agree with the purchase
-order (what we agreed to buy, at what price) and with the goods receipt (what actually arrived)?
-And is it a duplicate of something already paid? Today that means opening the PDF, finding the PO
-in the ERP, comparing line by line, and checking the payment history.
+The slice helps the clerk prepare one reviewed payment batch. AI fits variable document
+layouts; arithmetic and payment policy belong in deterministic code. Already structured EDI
+invoices do not need a model. No actual payments or outgoing emails occur in this prototype.
 
-**What it costs.** I don't have real figures, so these are *illustrative assumptions*, not data:
-at ~250 invoices/week and a few minutes each, that's a day or more of skilled time every week
-spent mostly confirming that clean invoices are clean. The bigger cost is what slips through when
-someone is rushing: a price quietly raised by $1.50 a box, a supplier billing before the goods
-arrived, the same invoice re-sent with a new number. These are small, frequent leaks that nobody
-notices.
+## The human workflow
 
-**Why an AI harness fits, and where it doesn't.**
-- *Fits:* the hard, tedious part is **reading**. Labels differ ("PO Number" vs "Your Order Ref"),
-  references come in different formats ("PO-45000120" vs "4500-0120"), and one supplier types its
-  invoice as a letter. Regexes and templates break on exactly this variety. A model handles it well.
-- *Doesn't fit:* **deciding whether to pay.** That's company policy, it has to be auditable, and it
-  must be exactly repeatable. So the model never decides anything. It transcribes. Plain code does
-  the matching and the judgement, and a person approves.
-- *Not for:* companies already on EDI or e-invoicing (the data is structured already), and scanned
-  faxes (detected but not read in this slice).
+A queue and a document review screen fit batch work better than a chat transcript. The clerk
+uploads PDFs or loads synthetic examples, sees readiness/exception labels, and compares the
+original PDF with extracted fields and plain-language findings. PDF.js renders inside React,
+so inspection does not depend on a browser's native PDF plugin. The original remains downloadable.
 
-**Scope.** One workflow, end to end: *PDF invoice → checked → decision by the clerk → approved
-batch out*. Everything around it (ERP, email sending, auth) is stubbed.
+Corrections use labelled fields and editable line items, require a note, rerun checks and clear
+previous approval. The clerk can approve, hold, undo or edit a supplier email draft. Flagged
+approvals require an explanation; records without basic identity/positive USD amounts cannot
+be approved. The exported CSV includes approved records and review notes, escaping formula-like
+text. The session lifecycle and explicit no-AI demo banner are visible to the user.
 
-## 2. The user and the interface
+## Vertical architecture
 
-The clerk thinks in **POs, receipts, credit notes and holds**, not in "extraction confidence".
-They want two things: to clear the clean invoices fast, and to be told exactly what's wrong
-with the rest.
+The Rust composition root wires five features in `ai-backend/src/features`:
 
-**Why a web app.** The clerk already works at a desktop, with PDFs in email and the ERP in a
-browser. The work is *batch* (a pile every morning) and *visual* (you have to see the invoice next to
-the findings). I considered:
-- a **forward-to-an-email-address bot**: the lowest-friction intake, but reviewing a flag needs
-  a side-by-side view, so it would end up linking to a web page anyway;
-- a **chat surface** (Slack/Teams): wrong shape for a queue of 50 items that needs an audit trail;
-- an **ERP plugin**: the right home long-term, but far too much integration for a slice.
+- `inbox`: upload/sample intake, queue, sequential processing and embedded memory KV storage.
+- `agents`: MAX HTTP transport, Qwen reader/verifier prompts, JSON validation and traces.
+- `checking`: invoice/reference types, PDF text, grounding, matching and deterministic rules.
+- `review`: corrections, human decisions, audit notes and editable supplier drafts.
+- `exporting`: approved CSV serialization and formula escaping.
 
-**The experience.**
-1. **Drop the pile** onto the page. Invoices are read in the background and
-   the page updates as they come in.
-2. **A triaged queue.** *Don't pay yet* first, then *Needs a look*, then *Ready to approve*. Each
-   row shows a one-line reason ("Charged more than the agreed price · $15.00 in question"). Status
-   is shown with words and icons, never colour alone.
-3. **Clear the clean ones in one click** ("Approve all 7 ready", with a confirmation).
-4. **Review side by side.** The invoice page sits on the left. On the right: what's wrong, with
-   the numbers, and *what to do about it*; what was read; and how each line compares with the PO
-   ("PO price $34.90 · received 10 · matched by item code"). Any value that couldn't be confirmed
-   on the page is **highlighted yellow with "check this"**.
-5. **Act.** *Approve for payment*, *Put on hold*, or *Email the supplier*. The email is a draft
-   built only from the findings, which the clerk edits and copies. **Approving a flagged invoice
-   requires a short note** ("Purchasing confirmed new price"). That's friction exactly where it
-   matters, and it doubles as the audit trail.
-6. **Out.** Download the approved batch as CSV for the ERP import.
+React's `frontend/src/features/inbox` and `review` own their views. Shared API types, layout
+and styling stay small. There are no global controllers/services/repositories layers. The same
+Rust checking pipeline is invoked by the HTTP workflow, agent CLI and evaluation command.
 
-**How they know it worked:** a green banner that names the PO and the amount ("Matches
-PO-45000110 and what the warehouse received. OK to pay $1,001.79.").
+Two application processes communicate through a local HTTP API: a Node static server hosts the
+compiled React app on 3000 and proxies `/api` to Rust/Axum on 8080. MAX is the third process on
+8000. Rust and MAX bind loopback; browser mutations reject cross-site requests. This is a local,
+single-user prototype, without authentication or a production deployment claim.
 
-**What happens when it doesn't:** the clerk never sees a stack trace or a silent failure. A
-scanned invoice says "Couldn't read this PDF, it looks like a scan" and suggests a next step. With
-no API key, the footer says it's in demo mode with a basic reader.
+Python is restricted to orchestration: `build.py` resolves paths, validates/downloads fixed
+artifacts and builds the application; `run.py` checks readiness and supervises process groups.
+Windows hands off to WSL. MAX's upstream Python/Mojo sources are third-party code, not a second
+invoice backend. The default installs the official compiled runtime, with an explicit Bazel
+source-build option. A source build is not a full compiler bootstrap; model graph compilation
+happens at first startup.
 
-## 3. Architecture
+## Harness and failure handling
 
-```
-PDF ─► text layer ─► EXTRACT ─► GROUND ─► ARITHMETIC ─► PO + SUPPLIER ─► DUPLICATES ─► LINE MATCH ─► DECIDE
-      (pdfplumber)   (Claude,    every     supplier's    key lookup,      paid history   item code,     approve /
-       no text? ──►  forced      value     own maths     fuzzy name       + this queue,  then fuzzy     review /
-       UNREADABLE    tool call)  on page?                                 exact + fuzzy  description;   hold
-                                                                                         price & qty
-                                                                                         vs receipts
+```text
+PDF text → Qwen reader → Rust schema validation → Qwen evidence verifier
+         → grounding → supported scope → arithmetic → PO/supplier matching
+         → paid/current-session duplicate checks → price/receipt checks
+         → ready / review / hold recommendation → human decision → CSV
 ```
 
-**Key decisions**
+The two roles share one Qwen3-4B model and run sequentially. The verifier compares source text
+with the extraction, can add concerns and cannot change values or remove deterministic findings.
+This is bounded agent orchestration, not autonomous tool selection. Agreement between two
+passes of the same model is not independent evidence of correctness.
 
-- **The model only transcribes.** It works through a forced `record_invoice` tool call with a
-  strict schema at temperature 0. The prompt says *copy, never calculate or correct*. That matters:
-  if the model quietly "fixed" a supplier's bad arithmetic, we'd lose the very signal we're
-  checking for. If the output fails schema validation, the error goes back to the model once and
-  then the invoice falls back to manual entry.
-- **Grounding check, the cheap hallucination guard.** Every extracted number, code and date must
-  appear in the PDF's text. Unconfirmed values are flagged to the clerk. An unconfirmed PO number
-  is not used at all, so the invoice can't be matched to the wrong PO.
-- **Business rules are plain code.** Tolerances live in `config.py` where a finance lead can read
-  them: 0.5% price drift, 2¢ rounding, a 14-day duplicate window. Every flag carries the rule, the
-  numbers and the amount at stake.
-- **Fail closed.** "Ready to approve" requires positive evidence on every check. Anything missing,
-  unreadable, unconfirmed or unmatched lands in review or hold. Nothing is ever paid
-  automatically: "approve" means "ready for *you* to approve".
-- **Partial billing and duplicates are handled.** Quantity is checked against
-  *received minus already paid*. Duplicates are caught both exactly (same supplier and number) and
-  fuzzily (same supplier and amount within 14 days under a new number), against payment history
-  and the current queue.
+Prompts request JSON and include schemas; Rust enforces types, unknown-field rejection,
+finite/bounded numbers and lengths. A custom serving template disables Qwen thinking. Both
+GPU and CPU modes use prompt-directed JSON rather than claiming grammar-constrained decoding.
+Calls are capped at 2048 output tokens / 180 seconds. A conservative 5500-byte request-text
+budget stays within an 8192 context with output allowance; oversized input is rejected rather
+than truncated. Each role makes one bounded call, with no hidden retry. Partial/truncated or
+invalid output fails closed. Verifier failure preserves the reader's extraction for review.
 
-**How I know if it's any good.** There are three evals, each answering a different question:
+The checks reject missing identity/amounts, unsupported currency, invalid dates and negative
+values. Grounding checks printed identifiers, dates and numeric evidence. It can miss a real
+number copied into the wrong field, so arithmetic and reference comparison are still necessary.
+An ungrounded PO is not matched. SKU matching precedes description matching. Price tolerance
+is 0.5% / $0.01 and arithmetic tolerance $0.02. Duplicate numbers block; same supplier/total
+within 14 days flags possible reissues. Receipt availability subtracts previously paid quantities.
 
-| Eval | Question | Result |
-|---|---|---|
-| `oracle` (perfect reading) | Do the business rules give the right answer? | 17/17 decisions, 0 unsafe approvals |
-| `baseline` (regex reader) | How much does the model earn its place? | 53% decisions, 62% field accuracy, **0 unsafe approvals** |
-| `fault_injection` | If the reader makes a mistake, do we still fail closed? | **49/49** corrupted readings not marked ready |
-| `llm` (Claude end to end) | The real thing | *Run `python evals/run_eval.py --extractor llm` and paste results here* |
+A sequential worker limits inference concurrency and lets later queue items see earlier
+results. Final checks, edits and approvals serialize through a mutation lock. Revision checks
+prevent stale writes; clearing/removing a record while inference is running cannot resurrect it.
+Approval rechecks current-session duplicates. Audit notes remain in the session, not on disk.
 
-The headline metric is **unsafe approvals**: problem invoices marked "ready". That's money out the
-door. The second metric is **needless flags**: clean invoices sent to review, which costs the clerk
-a minute each. The fault-injection test corrupts a perfect reading in seven realistic ways
-(misread price, a "self-consistent" misread where the model also fixes the totals, a dropped line,
-an invented line, a hallucinated PO, a wrong total, a wrong quantity). It confirms that the safety
-net works independently of how good the model is. Saved LLM extractions can be re-scored for free
-(`--extractor replay`) when the rules change.
+## Storage choice
 
-## 4. Tooling and tradeoffs
+SQLite is embedded with the Rust `rusqlite` bundled feature and `open_in_memory()`. A KV table
+maps invoice UUIDs to JSON records and stores PDF bytes in a blob. No extra database process,
+credentials or filesystem persistence is needed. Memory lasts until the backend shuts down,
+not merely until the browser tab closes. This intentionally follows the requested ephemeral
+session model; it is not an accounting ledger or durable audit trail. A 100-record / 200 MB
+limit bounds input storage. Downloaded weights/source remain on disk independently of session data.
 
-| Choice | Why | Weighed against |
-|---|---|---|
-| Python + Flask + server-rendered HTML | No build step; one `pip install`; full control over the clerk's screen | Streamlit is faster to build, but its rerun model feels less like a work queue. React is overkill for two screens. |
-| Claude via forced tool use, raw HTTP | The schema is enforced by the API; one dependency fewer; the request is fully visible | Official SDK (equally good; swapping is trivial) |
-| Sonnet by default, configurable | Quality first on messy layouts | Haiku is probably enough for transcription and much cheaper. The `llm` eval is how I'd decide. |
-| PDF **text layer** → model | Makes grounding possible; cheap; fast | Sending the PDF/page image to the model reads scans too, but loses the grounding check (text to verify against) |
-| Deterministic fuzzy matching | Auditable, repeatable, explainable | An LLM matcher would handle wilder descriptions, at the cost of explainability |
-| Template supplier email | Goes to an outside company: must contain only verified facts | An LLM-written email reads nicer but could state things the checks didn't establish |
-| JSON files for ERP + queue | Honest stub for a vertical slice | SQLite or a real ERP API: next step, not needed to prove the workflow |
+## Evaluation and delivery evidence
 
-**Deliberately not used:** agent frameworks (the control flow is a straight line, and an agent loop
-adds nothing but unpredictability), RAG or vector stores (finding a PO is a key lookup), and any
-auto-pay path.
+17 synthetic labelled PDFs cover three layouts, clean matches, price/quantity problems,
+arithmetic errors, duplicated/reissued invoices, missing PO/SKU and a scan. The Rust oracle
+checks match all 17 expected decisions and expected findings. Seven faults applied to each
+of seven clean extractions produce 49 cases; all are prevented from being recommended ready.
+These prove behavior on chosen fixtures, not real-world extraction accuracy.
 
-## 5. Reflections
+The actual local Qwen evaluation matched **10/17 decisions**, with **zero unsafe approvals**.
+All seven clean invoices were unnecessarily sent to review: six because the verifier flagged
+equivalent formatting/descriptions, one because a reader response put null in a required
+numeric field. There were 30 completed agent calls and one failed call, taking 66.4 seconds
+in aggregate; the scan was rejected before inference. This is a known quality limitation,
+not a successful extraction benchmark. The same synthetic cases informed prompt adjustments,
+so these are development results, not a held-out evaluation. Full traces are in
+`evals/results/live-max.json`; `summary.json` separates rules from model behavior.
 
-**Time spent:** *[fill in honestly, e.g. "~X hours: Y on problem/data, Z on harness, W on UI, V on evals and docs"]*
+The integration suite also checks actual PDF parsing, upload/review/edit/export routes,
+invalid inputs, memory reset, stale revisions, CSV formula handling and the two-role HTTP
+contract using fake responses. The application build and UI workflow are exercised locally.
+`invoice-check eval --live` is the separate command for actual MAX/Qwen evaluation.
 
-**What I'd do next**
-1. **Real invoices.** Get 50-100 anonymised invoices from real small suppliers (not from any employer)
-   and run the `llm` eval. That is the number I trust least today.
-2. **Scans.** Send image-only pages to the model's vision input, and replace text grounding with a
-   second independent read plus agreement checking.
-3. **Learn from overrides.** The clerk's notes on flagged-but-approved invoices are labelled data.
-   "Approved because purchasing agreed new price" repeated 10 times for one supplier suggests the PO
-   price, not the invoice, is wrong.
-4. **ERP integration**, credit notes, multi-PO invoices, per-supplier tolerances, multi-currency.
-5. **Tracing** of every extraction (prompt, output, grounding result, clerk's final decision) to
-   monitor drift when a supplier changes its layout.
+The Qwen snapshot was downloaded and hash-verified, and the official MAX runtime was installed
+and exercised with actual local inference. The NVIDIA monitoring utility failed, but MAX's CUDA
+backend was usable. Peak VRAM has not been measured. Source builds were attempted and rejected
+by upstream LLVM checksum mismatches; the standard setup uses the official MAX distribution.
+Windows/WSL and macOS scripts are documented and platform-aware, but were not exercised on
+those operating systems here. CI runs Rust/React checks across all three OSes; GPU support
+requires separate hardware validation.
 
-**What I'm least sure about**
-- **The eval set is mine.** I wrote the invoices *and* the rules, so oracle's 100% is close to
-  circular. It proves the rules do what I meant, not that what I meant covers reality. The fault
-  injection and an LLM run on real invoices are the honest signals.
-- **Grounding can be fooled** when a misread number happens to appear elsewhere on the page (a
-  quantity of "7" when the tax line says "7%"). The arithmetic and PO checks usually catch it
-  downstream, but not always.
-- **Tolerances are guesses.** 0.5% and 14 days should come from the company's controller, not
-  from me.
-- **"Approve all ready" is a deliberate bet.** It saves the most time, and it leans entirely on the
-  safety net. In production I'd watch how often clerks reverse a bulk approval before trusting it.
+## Tradeoffs and next steps
+
+Rust provides one typed backend and an embedded session store; React supports corrections
+without full-page reloads. This costs more setup than the original Python/HTML implementation,
+but follows the requested stack. MAX adds a vendor compiler/runtime and platform-specific
+requirements; its source download is for inspection and optional development builds, not a
+reason to pretend all inference is pure Mojo. Qwen3-4B BF16 is smaller than unquantized 8B and
+uses a format MAX supports. Its weights fit a sub-16 GB design budget; runtime headroom must
+still be measured. Windows requires WSL, and Qwen Metal support remains unvalidated.
+
+Reference POs, receipts and payment history are static synthetic fixtures. The demo regex reader
+is intentionally limited and is never selected automatically. There is no OCR, multi-PO support,
+credit-note support, receipt reservation across unpaid partial invoices, concurrent-user workflow,
+automatic payment or sent email. CLI checks cannot inspect the UI's in-memory queue.
+
+Time spent was not reliably recorded; the candidate should report their own actual effort.
+AI assistance was used for implementation, checks and documentation. Next priorities are
+50–100 authorized real invoices, actual Qwen accuracy/VRAM/latency measurements, evidence tied
+to page coordinates, and receipt reservations. Durable storage would require a deliberate
+change to the requested session lifecycle, plus access controls and audit retention.

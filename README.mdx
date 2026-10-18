@@ -1,0 +1,40 @@
+# Run Invoice Check
+
+The complete, maintained setup guide is [README.md](./README.md), including platform prerequisites,
+limitations and validation. [Local AI installation](./docs/LOCAL_AI.md) contains official download
+links for Linux, Windows/WSL and macOS.
+
+MDX is documentation, not an installer: execute these commands in a terminal after cloning.
+The scripts always resolve the repository root from their own location.
+
+```bash
+python3 build.py
+python3 run.py
+```
+
+Open http://localhost:3000. React runs on port 3000, Rust on 8080 and MAX on 8000.
+Windows PowerShell uses `py build.py` / `py run.py`, which hand execution to WSL2.
+The floating **Invoice assistant** uses that same local Qwen service to answer read-only questions
+about the selected invoice. It does not approve, edit, email or pay, and is unavailable in demo mode.
+
+`build.py` builds React and Rust, downloads the pinned MAX source to `inference/source`, installs
+MAX locally in `inference/.venv`, and downloads the pinned Qwen3-4B snapshot to `models/Qwen3-4B`.
+The inference graph compiles at first startup. To request a source build of MAX instead:
+
+```bash
+python3 build.py --inference-only --max-from-source
+```
+
+The source build can be blocked by upstream artifact/checksum failures; it does not bypass
+verification or silently select a different runtime. See the observed limitation in README.md.
+
+To inspect the workflow without AI downloads:
+
+```bash
+python3 build.py --app-only
+python3 run.py --demo
+```
+
+This is visibly labelled as a demo. Edits are stored in an embedded, in-memory KV database until
+the backend stops. Export first; **Clear session** removes the queue immediately. Downloaded
+source and model files remain on disk. Ctrl+C stops the supervised processes.

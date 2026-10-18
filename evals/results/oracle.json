@@ -1,285 +1,1067 @@
 {
-  "extractor": "oracle",
-  "model": null,
-  "invoices": 17,
-  "decision_accuracy": 1.0,
-  "unsafe_approvals": 0,
-  "needless_flags": 0,
-  "field_accuracy": 1.0,
-  "avg_seconds": 0.02,
-  "issues": {
-    "DUPLICATE_INVOICE": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 0
-    },
-    "ITEM_NOT_ON_PO": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 0
-    },
-    "MATH_ERROR": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 0
-    },
-    "POSSIBLE_DUPLICATE": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 0
-    },
-    "PO_NOT_FOUND": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 0
-    },
-    "PRICE_VARIANCE": {
-      "tp": 3,
-      "fp": 0,
-      "fn": 0
-    },
-    "QTY_EXCEEDS_RECEIVED": {
-      "tp": 3,
-      "fp": 0,
-      "fn": 0
-    },
-    "UNREADABLE": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 0
-    }
-  },
-  "rows": [
+  "correct": 17,
+  "mode": "oracle",
+  "results": [
     {
+      "expected": "approve",
       "file": "01_halvorsen_clean.pdf",
-      "layout": "A",
-      "want": "approve",
-      "got": "approve",
-      "want_issues": [],
-      "got_issues": [],
-      "seconds": 0.03,
-      "unsafe": false,
-      "headline": "Matches PO-45000110 and what the warehouse received. OK to pay $1,001.79."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "approve",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-02",
+          "invoice_number": "HF-10231",
+          "lines": [
+            {
+              "description": "Exterior deck screws 3in, box of 350",
+              "line_total": 370.0,
+              "quantity": 20.0,
+              "sku": "DS-300",
+              "unit_price": 18.5
+            },
+            {
+              "description": "Lag bolts 1/2 x 12in (box of 25)",
+              "line_total": 420.0,
+              "quantity": 10.0,
+              "sku": "LB-512",
+              "unit_price": 42.0
+            },
+            {
+              "description": "Flat washers 1/2in (box of 100)",
+              "line_total": 146.25,
+              "quantity": 15.0,
+              "sku": "WS-050",
+              "unit_price": 9.75
+            }
+          ],
+          "po_number": "PO-45000110",
+          "subtotal": 936.25,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 65.54,
+          "total": 1001.79
+        },
+        "extractor": "oracle",
+        "issues": [],
+        "po": {
+          "lines": [
+            {
+              "description": "Exterior deck screws 3in, box of 350",
+              "line": 1,
+              "qty_received": 20.0,
+              "sku": "DS-300",
+              "unit_price": 18.5
+            },
+            {
+              "description": "Lag bolts 1/2 x 12in (box of 25)",
+              "line": 2,
+              "qty_received": 10.0,
+              "sku": "LB-512",
+              "unit_price": 42.0
+            },
+            {
+              "description": "Flat washers 1/2in (box of 100)",
+              "line": 3,
+              "qty_received": 15.0,
+              "sku": "WS-050",
+              "unit_price": 9.75
+            }
+          ],
+          "po_number": "PO-45000110",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
     },
     {
+      "expected": "approve",
       "file": "02_ridgeline_clean.pdf",
-      "layout": "B",
-      "want": "approve",
-      "got": "approve",
-      "want_issues": [],
-      "got_issues": [],
-      "seconds": 0.02,
-      "unsafe": false,
-      "headline": "Matches PO-45000120 and what the warehouse received. OK to pay $2,177.45."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "approve",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-01",
+          "invoice_number": "RL-55870",
+          "lines": [
+            {
+              "description": "Pressure-treated 2x6x12",
+              "line_total": 594.0,
+              "quantity": 40.0,
+              "sku": "PT-2612",
+              "unit_price": 14.85
+            },
+            {
+              "description": "Pressure-treated 2x4x12",
+              "line_total": 576.0,
+              "quantity": 60.0,
+              "sku": "PT-2412",
+              "unit_price": 9.6
+            },
+            {
+              "description": "Cedar decking 5/4x6x8",
+              "line_total": 865.0,
+              "quantity": 50.0,
+              "sku": "CD-5408",
+              "unit_price": 17.3
+            }
+          ],
+          "po_number": "4500-0120",
+          "subtotal": 2035.0,
+          "supplier_name": "Ridgeline Lumber & Millwork",
+          "tax": 142.45,
+          "total": 2177.45
+        },
+        "extractor": "oracle",
+        "issues": [],
+        "po": {
+          "lines": [
+            {
+              "description": "Pressure-treated lumber 2x6x12",
+              "line": 1,
+              "qty_received": 40.0,
+              "sku": "PT-2612",
+              "unit_price": 14.85
+            },
+            {
+              "description": "Pressure-treated lumber 2x4x12",
+              "line": 2,
+              "qty_received": 60.0,
+              "sku": "PT-2412",
+              "unit_price": 9.6
+            },
+            {
+              "description": "Cedar decking 5/4x6x8",
+              "line": 3,
+              "qty_received": 50.0,
+              "sku": "CD-5408",
+              "unit_price": 17.3
+            }
+          ],
+          "po_number": "PO-45000120",
+          "supplier_id": "S002",
+          "supplier_name": "Ridgeline Lumber & Millwork"
+        },
+        "supplier_id": "S002"
+      }
     },
     {
+      "expected": "review",
       "file": "03_halvorsen_price_up.pdf",
-      "layout": "A",
-      "want": "review",
-      "got": "review",
-      "want_issues": [
-        "PRICE_VARIANCE"
-      ],
-      "got_issues": [
-        "PRICE_VARIANCE"
-      ],
-      "seconds": 0.02,
-      "unsafe": false,
-      "headline": "Charged more than the agreed price \u00b7 $15.00 in question."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-05",
+          "invoice_number": "HF-10240",
+          "lines": [
+            {
+              "description": "Stainless screws #10 x 2in (box of 100)",
+              "line_total": 364.0,
+              "quantity": 10.0,
+              "sku": "SS-200",
+              "unit_price": 36.4
+            },
+            {
+              "description": "Hex bolts 3/8 x 4in (box of 50)",
+              "line_total": 423.0,
+              "quantity": 20.0,
+              "sku": "HB-100",
+              "unit_price": 21.15
+            }
+          ],
+          "po_number": "PO-45000112",
+          "subtotal": 787.0,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 55.09,
+          "total": 842.09
+        },
+        "extractor": "oracle",
+        "issues": [
+          {
+            "amount_at_stake": 15.0,
+            "code": "PRICE_VARIANCE",
+            "detail": "Stainless screws #10 x 2in (box of 100): invoice $36.40 each; PO $34.90 each.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Price is above the agreed amount"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Stainless screws #10 x 2in (box of 100)",
+              "line": 1,
+              "qty_received": 10.0,
+              "sku": "SS-200",
+              "unit_price": 34.9
+            },
+            {
+              "description": "Hex bolts 3/8 x 4in (box of 50)",
+              "line": 2,
+              "qty_received": 20.0,
+              "sku": "HB-100",
+              "unit_price": 21.15
+            }
+          ],
+          "po_number": "PO-45000112",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
     },
     {
+      "expected": "review",
       "file": "04_halvorsen_short_delivery.pdf",
-      "layout": "A",
-      "want": "review",
-      "got": "review",
-      "want_issues": [
-        "QTY_EXCEEDS_RECEIVED"
-      ],
-      "got_issues": [
-        "QTY_EXCEEDS_RECEIVED"
-      ],
-      "seconds": 0.02,
-      "unsafe": false,
-      "headline": "Billed for more than we received \u00b7 $109.60 in question."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-04",
+          "invoice_number": "HF-10236",
+          "lines": [
+            {
+              "description": "Exterior deck screws 2.5in, box of 350",
+              "line_total": 486.0,
+              "quantity": 30.0,
+              "sku": "DS-250",
+              "unit_price": 16.2
+            },
+            {
+              "description": "Wedge anchors 3/8 x 3in (box of 25)",
+              "line_total": 328.8,
+              "quantity": 12.0,
+              "sku": "AN-375",
+              "unit_price": 27.4
+            }
+          ],
+          "po_number": "PO-45000111",
+          "subtotal": 814.8,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 57.04,
+          "total": 871.84
+        },
+        "extractor": "oracle",
+        "issues": [
+          {
+            "amount_at_stake": 109.6,
+            "code": "QTY_EXCEEDS_RECEIVED",
+            "detail": "Wedge anchors 3/8 x 3in (box of 25): billed 12; received 8; previously paid -0; left to bill 8.",
+            "line_index": 1,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Billed for more than received"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Exterior deck screws 2.5in, box of 350",
+              "line": 1,
+              "qty_received": 30.0,
+              "sku": "DS-250",
+              "unit_price": 16.2
+            },
+            {
+              "description": "Wedge anchors 3/8 x 3in (box of 25)",
+              "line": 2,
+              "qty_received": 8.0,
+              "sku": "AN-375",
+              "unit_price": 27.4
+            }
+          ],
+          "po_number": "PO-45000111",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
     },
     {
+      "expected": "review",
       "file": "05_ridgeline_surcharge.pdf",
-      "layout": "B",
-      "want": "review",
-      "got": "review",
-      "want_issues": [
-        "ITEM_NOT_ON_PO"
-      ],
-      "got_issues": [
-        "ITEM_NOT_ON_PO"
-      ],
-      "seconds": 0.02,
-      "unsafe": false,
-      "headline": "Charge that isn't on the PO \u00b7 $35.00 in question."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-06",
+          "invoice_number": "RL-55902",
+          "lines": [
+            {
+              "description": "Plywood 3/4 CDX 4x8",
+              "line_total": 1218.75,
+              "quantity": 25.0,
+              "sku": "PLY-34",
+              "unit_price": 48.75
+            },
+            {
+              "description": "OSB 7/16 4x8",
+              "line_total": 672.0,
+              "quantity": 30.0,
+              "sku": "OSB-716",
+              "unit_price": 22.4
+            },
+            {
+              "description": "Fuel surcharge",
+              "line_total": 35.0,
+              "quantity": 1.0,
+              "sku": "FS-01",
+              "unit_price": 35.0
+            }
+          ],
+          "po_number": "4500-0121",
+          "subtotal": 1925.75,
+          "supplier_name": "Ridgeline Lumber & Millwork",
+          "tax": 134.8,
+          "total": 2060.55
+        },
+        "extractor": "oracle",
+        "issues": [
+          {
+            "amount_at_stake": 35.0,
+            "code": "ITEM_NOT_ON_PO",
+            "detail": "Fuel surcharge",
+            "line_index": 2,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Charge is not on the purchase order"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Plywood 3/4in CDX 4x8",
+              "line": 1,
+              "qty_received": 25.0,
+              "sku": "PLY-34",
+              "unit_price": 48.75
+            },
+            {
+              "description": "OSB sheathing 7/16in 4x8",
+              "line": 2,
+              "qty_received": 30.0,
+              "sku": "OSB-716",
+              "unit_price": 22.4
+            }
+          ],
+          "po_number": "PO-45000121",
+          "supplier_id": "S002",
+          "supplier_name": "Ridgeline Lumber & Millwork"
+        },
+        "supplier_id": "S002"
+      }
     },
     {
+      "expected": "review",
       "file": "06_ridgeline_math_error.pdf",
-      "layout": "B",
-      "want": "review",
-      "got": "review",
-      "want_issues": [
-        "MATH_ERROR"
-      ],
-      "got_issues": [
-        "MATH_ERROR"
-      ],
-      "seconds": 0.03,
-      "unsafe": false,
-      "headline": "Supplier's arithmetic doesn't add up \u00b7 $9.00 in question."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-07",
+          "invoice_number": "RL-55911",
+          "lines": [
+            {
+              "description": "Primed pine trim 1x4x16",
+              "line_total": 387.0,
+              "quantity": 20.0,
+              "sku": "TRM-114",
+              "unit_price": 18.9
+            },
+            {
+              "description": "Colonial baseboard 3-5/8 x 16",
+              "line_total": 369.0,
+              "quantity": 15.0,
+              "sku": "BB-358",
+              "unit_price": 24.6
+            }
+          ],
+          "po_number": "4500-0122",
+          "subtotal": 756.0,
+          "supplier_name": "Ridgeline Lumber & Millwork",
+          "tax": 52.92,
+          "total": 808.92
+        },
+        "extractor": "oracle",
+        "issues": [
+          {
+            "amount_at_stake": 9.0,
+            "code": "MATH_ERROR",
+            "detail": "20 × $18.90 = $378.00; printed $387.00.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Line amount does not add up"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Primed pine trim 1x4x16",
+              "line": 1,
+              "qty_received": 20.0,
+              "sku": "TRM-114",
+              "unit_price": 18.9
+            },
+            {
+              "description": "Colonial baseboard 3-5/8in x 16ft",
+              "line": 2,
+              "qty_received": 15.0,
+              "sku": "BB-358",
+              "unit_price": 24.6
+            }
+          ],
+          "po_number": "PO-45000122",
+          "supplier_id": "S002",
+          "supplier_name": "Ridgeline Lumber & Millwork"
+        },
+        "supplier_id": "S002"
+      }
     },
     {
+      "expected": "hold",
       "file": "07_halvorsen_resent_duplicate.pdf",
-      "layout": "A",
-      "want": "hold",
-      "got": "hold",
-      "want_issues": [
-        "DUPLICATE_INVOICE"
-      ],
-      "got_issues": [
-        "DUPLICATE_INVOICE"
-      ],
-      "seconds": 0.02,
-      "unsafe": false,
-      "headline": "This invoice was already processed."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "hold",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-09-15",
+          "invoice_number": "HF-10198",
+          "lines": [
+            {
+              "description": "Hex bolts 3/8 x 4in (box of 50)",
+              "line_total": 211.5,
+              "quantity": 10.0,
+              "sku": "HB-100",
+              "unit_price": 21.15
+            }
+          ],
+          "po_number": "PO-45000105",
+          "subtotal": 211.5,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 14.81,
+          "total": 226.31
+        },
+        "extractor": "oracle",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "DUPLICATE_INVOICE",
+            "detail": "Invoice HF-10198 is already in payment history. Check before paying.",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "block",
+            "title": "Invoice already recorded"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Hex bolts 3/8 x 4in (box of 50)",
+              "line": 1,
+              "qty_received": 10.0,
+              "sku": "HB-100",
+              "unit_price": 21.15
+            }
+          ],
+          "po_number": "PO-45000105",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
     },
     {
+      "expected": "hold",
       "file": "08_kowalski_no_po.pdf",
-      "layout": "C",
-      "want": "hold",
-      "got": "hold",
-      "want_issues": [
-        "PO_NOT_FOUND"
-      ],
-      "got_issues": [
-        "PO_NOT_FOUND"
-      ],
-      "seconds": 0.02,
-      "unsafe": false,
-      "headline": "No matching purchase order."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "hold",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-08",
+          "invoice_number": "KH-0412",
+          "lines": [
+            {
+              "description": "16d common nails, 50 lb box",
+              "line_total": 474.0,
+              "quantity": 6.0,
+              "sku": "CN-16D",
+              "unit_price": 79.0
+            },
+            {
+              "description": "Rafter ties RT-7",
+              "line_total": 73.5,
+              "quantity": 30.0,
+              "sku": "RS-24",
+              "unit_price": 2.45
+            }
+          ],
+          "po_number": null,
+          "subtotal": 547.5,
+          "supplier_name": "Kowalski Hardware Supply",
+          "tax": 38.33,
+          "total": 585.83
+        },
+        "extractor": "oracle",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "PO_NOT_FOUND",
+            "detail": "Confirm the purchase-order number with the supplier or purchasing.",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "block",
+            "title": "No matching purchase order"
+          }
+        ],
+        "po": null,
+        "supplier_id": "S003"
+      }
     },
     {
+      "expected": "approve",
       "file": "09_kowalski_clean.pdf",
-      "layout": "C",
-      "want": "approve",
-      "got": "approve",
-      "want_issues": [],
-      "got_issues": [],
-      "seconds": 0.02,
-      "unsafe": false,
-      "headline": "Matches PO-45000131 and what the warehouse received. OK to pay $379.85."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "approve",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-03",
+          "invoice_number": "KH-0398",
+          "lines": [
+            {
+              "description": "galvanized joist hangers 2x6",
+              "line_total": 155.0,
+              "quantity": 50.0,
+              "sku": "JH-206",
+              "unit_price": 3.1
+            },
+            {
+              "description": "hurricane ties H2.5A",
+              "line_total": 74.0,
+              "quantity": 40.0,
+              "sku": "HT-12",
+              "unit_price": 1.85
+            },
+            {
+              "description": "adjustable 4x4 post bases",
+              "line_total": 126.0,
+              "quantity": 10.0,
+              "sku": "PB-44",
+              "unit_price": 12.6
+            }
+          ],
+          "po_number": "45000131",
+          "subtotal": 355.0,
+          "supplier_name": "Kowalski Hardware Supply",
+          "tax": 24.85,
+          "total": 379.85
+        },
+        "extractor": "oracle",
+        "issues": [],
+        "po": {
+          "lines": [
+            {
+              "description": "Joist hanger 2x6, galvanized",
+              "line": 1,
+              "qty_received": 50.0,
+              "sku": "JH-206",
+              "unit_price": 3.1
+            },
+            {
+              "description": "Hurricane tie H2.5A",
+              "line": 2,
+              "qty_received": 40.0,
+              "sku": "HT-12",
+              "unit_price": 1.85
+            },
+            {
+              "description": "Post base 4x4, adjustable",
+              "line": 3,
+              "qty_received": 10.0,
+              "sku": "PB-44",
+              "unit_price": 12.6
+            }
+          ],
+          "po_number": "PO-45000131",
+          "supplier_id": "S003",
+          "supplier_name": "Kowalski Hardware Supply"
+        },
+        "supplier_id": "S003"
+      }
     },
     {
+      "expected": "review",
       "file": "10_kowalski_price_up.pdf",
-      "layout": "C",
-      "want": "review",
-      "got": "review",
-      "want_issues": [
-        "PRICE_VARIANCE"
-      ],
-      "got_issues": [
-        "PRICE_VARIANCE"
-      ],
-      "seconds": 0.02,
-      "unsafe": false,
-      "headline": "Charged more than the agreed price \u00b7 $33.00 in question."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-06",
+          "invoice_number": "KH-0405",
+          "lines": [
+            {
+              "description": "16d common nails, 50 lb box",
+              "line_total": 507.0,
+              "quantity": 6.0,
+              "sku": "CN-16D",
+              "unit_price": 84.5
+            },
+            {
+              "description": "rafter ties RT-7",
+              "line_total": 73.5,
+              "quantity": 30.0,
+              "sku": "RS-24",
+              "unit_price": 2.45
+            }
+          ],
+          "po_number": "4500 0132",
+          "subtotal": 580.5,
+          "supplier_name": "Kowalski Hardware Supply",
+          "tax": 40.64,
+          "total": 621.14
+        },
+        "extractor": "oracle",
+        "issues": [
+          {
+            "amount_at_stake": 33.0,
+            "code": "PRICE_VARIANCE",
+            "detail": "16d common nails, 50 lb box: invoice $84.50 each; PO $79.00 each.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Price is above the agreed amount"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "16d common nails, 50 lb box",
+              "line": 1,
+              "qty_received": 6.0,
+              "sku": "CN-16D",
+              "unit_price": 79.0
+            },
+            {
+              "description": "Rafter tie RT-7",
+              "line": 2,
+              "qty_received": 30.0,
+              "sku": "RS-24",
+              "unit_price": 2.45
+            }
+          ],
+          "po_number": "PO-45000132",
+          "supplier_id": "S003",
+          "supplier_name": "Kowalski Hardware Supply"
+        },
+        "supplier_id": "S003"
+      }
     },
     {
+      "expected": "approve",
       "file": "11_halvorsen_partial_billing.pdf",
-      "layout": "A",
-      "want": "approve",
-      "got": "approve",
-      "want_issues": [],
-      "got_issues": [],
-      "seconds": 0.02,
-      "unsafe": false,
-      "headline": "Matches PO-45000140 and what the warehouse received. OK to pay $158.36."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "approve",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-09",
+          "invoice_number": "HF-10252",
+          "lines": [
+            {
+              "description": "Exterior deck screws 3in, box of 350",
+              "line_total": 148.0,
+              "quantity": 8.0,
+              "sku": "DS-300",
+              "unit_price": 18.5
+            }
+          ],
+          "po_number": "PO-45000140",
+          "subtotal": 148.0,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 10.36,
+          "total": 158.36
+        },
+        "extractor": "oracle",
+        "issues": [],
+        "po": {
+          "lines": [
+            {
+              "description": "Exterior deck screws 3in, box of 350",
+              "line": 1,
+              "qty_received": 20.0,
+              "sku": "DS-300",
+              "unit_price": 18.5
+            }
+          ],
+          "po_number": "PO-45000140",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
     },
     {
+      "expected": "approve",
       "file": "12_ridgeline_name_variant.pdf",
-      "layout": "B",
-      "want": "approve",
-      "got": "approve",
-      "want_issues": [],
-      "got_issues": [],
-      "seconds": 0.02,
-      "unsafe": false,
-      "headline": "Matches PO-45000123 and what the warehouse received. OK to pay $1,343.39."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "approve",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-09",
+          "invoice_number": "RL-55925",
+          "lines": [
+            {
+              "description": "Pressure-treated 2x4x12",
+              "line_total": 768.0,
+              "quantity": 80.0,
+              "sku": "PT-2412",
+              "unit_price": 9.6
+            },
+            {
+              "description": "Plywood 3/4 CDX 4x8",
+              "line_total": 487.5,
+              "quantity": 10.0,
+              "sku": "PLY-34",
+              "unit_price": 48.75
+            }
+          ],
+          "po_number": "4500-0123",
+          "subtotal": 1255.5,
+          "supplier_name": "RIDGELINE LUMBER CO.",
+          "tax": 87.89,
+          "total": 1343.39
+        },
+        "extractor": "oracle",
+        "issues": [],
+        "po": {
+          "lines": [
+            {
+              "description": "Pressure-treated lumber 2x4x12",
+              "line": 1,
+              "qty_received": 80.0,
+              "sku": "PT-2412",
+              "unit_price": 9.6
+            },
+            {
+              "description": "Plywood 3/4in CDX 4x8",
+              "line": 2,
+              "qty_received": 10.0,
+              "sku": "PLY-34",
+              "unit_price": 48.75
+            }
+          ],
+          "po_number": "PO-45000123",
+          "supplier_id": "S002",
+          "supplier_name": "Ridgeline Lumber & Millwork"
+        },
+        "supplier_id": "S002"
+      }
     },
     {
+      "expected": "approve",
       "file": "13_halvorsen_missing_sku.pdf",
-      "layout": "A",
-      "want": "approve",
-      "got": "approve",
-      "want_issues": [],
-      "got_issues": [],
-      "seconds": 0.03,
-      "unsafe": false,
-      "headline": "Matches PO-45000113 and what the warehouse received. OK to pay $764.52."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "approve",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-10",
+          "invoice_number": "HF-10259",
+          "lines": [
+            {
+              "description": "Exterior Deck Screws 3in - Box/350",
+              "line_total": 462.5,
+              "quantity": 25.0,
+              "sku": null,
+              "unit_price": 18.5
+            },
+            {
+              "description": "Lag bolts 1/2 x 12in (box of 25)",
+              "line_total": 252.0,
+              "quantity": 6.0,
+              "sku": "LB-512",
+              "unit_price": 42.0
+            }
+          ],
+          "po_number": "PO-45000113",
+          "subtotal": 714.5,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 50.02,
+          "total": 764.52
+        },
+        "extractor": "oracle",
+        "issues": [],
+        "po": {
+          "lines": [
+            {
+              "description": "Exterior deck screws 3in, box of 350",
+              "line": 1,
+              "qty_received": 25.0,
+              "sku": "DS-300",
+              "unit_price": 18.5
+            },
+            {
+              "description": "Lag bolts 1/2 x 12in (box of 25)",
+              "line": 2,
+              "qty_received": 6.0,
+              "sku": "LB-512",
+              "unit_price": 42.0
+            }
+          ],
+          "po_number": "PO-45000113",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
     },
     {
+      "expected": "review",
       "file": "14_halvorsen_two_problems.pdf",
-      "layout": "A",
-      "want": "review",
-      "got": "review",
-      "want_issues": [
-        "PRICE_VARIANCE",
-        "QTY_EXCEEDS_RECEIVED"
-      ],
-      "got_issues": [
-        "PRICE_VARIANCE",
-        "QTY_EXCEEDS_RECEIVED"
-      ],
-      "seconds": 0.03,
-      "unsafe": false,
-      "headline": "Charged more than the agreed price (+1 more) \u00b7 $118.00 in question."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-12",
+          "invoice_number": "HF-10263",
+          "lines": [
+            {
+              "description": "Stainless screws #10 x 2in (box of 100)",
+              "line_total": 427.2,
+              "quantity": 12.0,
+              "sku": "SS-200",
+              "unit_price": 35.6
+            },
+            {
+              "description": "Wedge anchors 3/8 x 3in (box of 25)",
+              "line_total": 274.0,
+              "quantity": 10.0,
+              "sku": "AN-375",
+              "unit_price": 27.4
+            }
+          ],
+          "po_number": "PO-45000114",
+          "subtotal": 701.2,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 49.08,
+          "total": 750.28
+        },
+        "extractor": "oracle",
+        "issues": [
+          {
+            "amount_at_stake": 8.4,
+            "code": "PRICE_VARIANCE",
+            "detail": "Stainless screws #10 x 2in (box of 100): invoice $35.60 each; PO $34.90 each.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Price is above the agreed amount"
+          },
+          {
+            "amount_at_stake": 109.6,
+            "code": "QTY_EXCEEDS_RECEIVED",
+            "detail": "Wedge anchors 3/8 x 3in (box of 25): billed 10; received 6; previously paid -0; left to bill 6.",
+            "line_index": 1,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Billed for more than received"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Stainless screws #10 x 2in (box of 100)",
+              "line": 1,
+              "qty_received": 12.0,
+              "sku": "SS-200",
+              "unit_price": 34.9
+            },
+            {
+              "description": "Wedge anchors 3/8 x 3in (box of 25)",
+              "line": 2,
+              "qty_received": 6.0,
+              "sku": "AN-375",
+              "unit_price": 27.4
+            }
+          ],
+          "po_number": "PO-45000114",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
     },
     {
+      "expected": "approve",
       "file": "15_ridgeline_price_down.pdf",
-      "layout": "B",
-      "want": "approve",
-      "got": "approve",
-      "want_issues": [],
-      "got_issues": [],
-      "seconds": 0.02,
-      "unsafe": false,
-      "headline": "Matches PO-45000124 and what the warehouse received. OK to pay $723.32."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "approve",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-13",
+          "invoice_number": "RL-55930",
+          "lines": [
+            {
+              "description": "Cedar decking 5/4x6x8",
+              "line_total": 676.0,
+              "quantity": 40.0,
+              "sku": "CD-5408",
+              "unit_price": 16.9
+            }
+          ],
+          "po_number": "4500-0124",
+          "subtotal": 676.0,
+          "supplier_name": "Ridgeline Lumber & Millwork",
+          "tax": 47.32,
+          "total": 723.32
+        },
+        "extractor": "oracle",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "PRICE_BELOW_PO",
+            "detail": "Cedar decking 5/4x6x8: $0.40 below the agreed unit price.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "info",
+            "title": "Price is below the PO"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Cedar decking 5/4x6x8",
+              "line": 1,
+              "qty_received": 40.0,
+              "sku": "CD-5408",
+              "unit_price": 17.3
+            }
+          ],
+          "po_number": "PO-45000124",
+          "supplier_id": "S002",
+          "supplier_name": "Ridgeline Lumber & Millwork"
+        },
+        "supplier_id": "S002"
+      }
     },
     {
+      "expected": "hold",
       "file": "16_halvorsen_reissued.pdf",
-      "layout": "A",
-      "want": "hold",
-      "got": "hold",
-      "want_issues": [
-        "POSSIBLE_DUPLICATE",
-        "QTY_EXCEEDS_RECEIVED"
-      ],
-      "got_issues": [
-        "POSSIBLE_DUPLICATE",
-        "QTY_EXCEEDS_RECEIVED"
-      ],
-      "seconds": 0.02,
-      "unsafe": false,
-      "headline": "Looks like a re-issue of an invoice we already have."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "hold",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-01",
+          "invoice_number": "HF-10175",
+          "lines": [
+            {
+              "description": "Flat washers 1/2in (box of 100)",
+              "line_total": 195.0,
+              "quantity": 20.0,
+              "sku": "WS-050",
+              "unit_price": 9.75
+            }
+          ],
+          "po_number": "PO-45000106",
+          "subtotal": 195.0,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 13.65,
+          "total": 208.65
+        },
+        "extractor": "oracle",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "POSSIBLE_DUPLICATE",
+            "detail": "Same supplier and total as HF-10171 in payment history, dated within 14 days.",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "block",
+            "title": "Possible reissued invoice"
+          },
+          {
+            "amount_at_stake": 195.0,
+            "code": "QTY_EXCEEDS_RECEIVED",
+            "detail": "Flat washers 1/2in (box of 100): billed 20; received 20; previously paid 20; left to bill 0.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Billed for more than received"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Flat washers 1/2in (box of 100)",
+              "line": 1,
+              "qty_received": 20.0,
+              "sku": "WS-050",
+              "unit_price": 9.75
+            }
+          ],
+          "po_number": "PO-45000106",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
     },
     {
+      "expected": "review",
       "file": "17_scanned_fax.pdf",
-      "layout": "SCAN",
-      "want": "review",
-      "got": "review",
-      "want_issues": [
-        "UNREADABLE"
-      ],
-      "got_issues": [
-        "UNREADABLE"
-      ],
-      "seconds": 0.0,
-      "unsafe": false,
-      "headline": "Couldn't read this PDF."
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "review",
+        "extraction": null,
+        "extractor": "oracle",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "UNREADABLE",
+            "detail": "A page has no readable text. Request a digital PDF or review manually.",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "This document needs attention"
+          }
+        ],
+        "po": null,
+        "supplier_id": null
+      }
     }
-  ]
+  ],
+  "total": 17,
+  "unsafe_approvals": 0
 }

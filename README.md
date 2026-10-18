@@ -1,99 +1,158 @@
 # Invoice Check
 
-**A second pair of eyes for the accounts-payable clerk.** Drop in supplier invoice PDFs.
-Each one is checked against its purchase order, what the warehouse actually received,
-and what has already been paid. Then it is sorted into **Ready to approve**, **Needs a look**
-or **Don't pay yet**, with a plain-English reason, the amount at stake, and a drafted
-email to the supplier when something's off.
+A local workspace for an accounts-payable clerk to compare supplier PDF invoices with
+purchase orders, goods received and payment history. Review exceptions beside the original
+PDF, correct fields, record a decision and export approved invoices. Nothing is emailed or paid.
 
-It's built for the AP person at a small or mid-size distributor: someone who works through
-a pile of PDFs from dozens of suppliers every week, each with its own layout, and checks
-them by hand against ERP screens.
+**React frontend + Rust backend + embedded, in-memory SQLite KV.** Two application services
+(3000 and 8080), plus MAX/Qwen inference (8000). Python is used only by `build.py` and `run.py`.
+The third-party MAX runtime itself contains Python serving code and Mojo kernels.
 
-> Design rationale, tradeoffs and limitations are in [DESIGN.md](DESIGN.md).
+## Start here
 
----
-
-## Run it
-
-Requires Python 3.10+.
+Install **Python 3.10–3.14**, **Node.js 24**, **Rust 1.97.1**, Git and a C compiler.
+The full AI path needs a supported MAX device; Windows runs through WSL2. Installation
+commands and download links for Linux, Windows and macOS are in [LOCAL_AI.md](docs/LOCAL_AI.md).
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+# From the cloned repository, build React/Rust and prepare the local MAX runtime + Qwen.
+python3 build.py
 
-cp .env.example .env          # then put your key in it (or export ANTHROPIC_API_KEY=...)
-python -m app.web             # open http://localhost:5000
+# Start all three services. Open http://localhost:3000.
+python3 run.py
 ```
 
-Click **Load the 17 sample invoices**, then open any row.
+`run.py` preloads the 17 sample invoices before opening the frontend, so they are visible
+immediately while local processing continues in the background. Use `python3 run.py --empty`
+to start with a blank session for real uploads.
 
-**No API key?** The app still runs. It falls back to a basic regex reader and says so in the
-footer. That reader only understands simple table layouts, so more invoices land in
-"Needs a look". It never approves on a guess (see the evals).
+On native Windows use `py build.py` and `py run.py`; both forward to the default WSL
+Linux distribution, where the prerequisites must also be installed. Prefer cloning and
+running directly inside WSL for filesystem performance.
 
-### Command line
+The build downloads the MAX **source code** into `inference/source/` and the official compiled
+MAX distribution into `inference/.venv/`. The Qwen snapshot goes into `models/Qwen3-4B/`.
+Paths are anchored to the scripts, never the terminal's current directory. For example,
+`python3 /path/to/invoice-check/build.py` still downloads into that checkout.
+
+The model download is **8.06 GB**. Source/build caches and runtime dependencies need additional
+disk space; reserve at least 30 GB, considerably more for a source build. No API keys needed.
+[`runtime.lock.json`](runtime.lock.json) pins MAX 26.6.0 / Mojo 1.1.0 by tag and commit,
+and Qwen3-4B by immutable revision and file hashes. Model/source downloads stay out of Git.
+
+### Try the application without an AI runtime
 
 ```bash
-python -m harness data/samples/03_halvorsen_price_up.pdf          # one or more PDFs
-python -m harness --json data/samples/14_halvorsen_two_problems.pdf
+python3 build.py --app-only
+python3 run.py --demo
 ```
 
-### Evals and tests
+This explicit demo reads actual PDF text using limited regex rules. The UI labels it as a
+**demo with no AI**; it is never a fallback for failed inference. Open an invoice, compare
+its PDF, edit details if needed, approve/hold, and export.
+A scan deliberately requires manual review. No fixture answers are used by the demo reader.
+
+### Build MAX from its source
 
 ```bash
-python evals/run_eval.py --extractor oracle     # business rules alone, given perfect reading
-python evals/run_eval.py --extractor baseline   # regex reader, no key
-python evals/run_eval.py --extractor llm        # Claude end to end (saves its extractions)
-python evals/run_eval.py --extractor replay     # re-score the saved LLM run, no API calls
-python evals/fault_injection.py                 # corrupt the reading 7 ways: do we fail closed?
-python -m unittest discover tests
+python3 build.py --inference-only --max-from-source --jobs 4
+python3 run.py
 ```
 
-Reports are written to `evals/results/`. The eval exits non-zero if any invoice with a real
-problem gets marked "ready to approve".
+This invokes the upstream Bazel target `//max/python/max/_entrypoints:pipelines` with
+`--config=prebuilt-mojo`: MAX's public serving code and Mojo kernels are built using the
+vendor's compiler toolchain. It does **not** bootstrap the entire compiler. The default
+package path avoids this expensive developer build. In both paths, the model graph is
+compiled at first startup; allow several minutes.
 
-### Regenerate the sample data
+**Observed source-build limitation:** the tested MAX tag's LLVM archive download failed
+its upstream checksum in this environment. Checksums remain enabled. Use the default official
+package path, or retry the source build after the upstream artifact issue is resolved.
+A failed build never writes the runtime-ready marker or silently switches runtime modes.
+
+## Running and session storage
+
+`run.py` checks ports, starts services in order, waits for readiness, and shuts down all child
+process groups on Ctrl+C or a service failure. Logs are local under `inference/logs/`.
 
 ```bash
-python data/generate.py
+python3 run.py --frontend-port 3001 --backend-port 8081 --inference-port 8001
+python3 run.py --device cpu             # slower; float32 needs substantially more system RAM
+python3 build.py --download-only        # only the fixed source + model snapshot
 ```
 
----
+SQLite is embedded through Rust's `rusqlite` with `open_in_memory()`: keys are invoice UUIDs,
+values are JSON records, with PDF bytes stored alongside them. There is no Redis process,
+database file or setup. **Edits and decisions survive page reloads, but disappear when the
+Rust process stops.** Clear session removes everything immediately; stale AI jobs cannot
+restore deleted invoices. Export approved records before shutdown. Model files are not cleared.
 
-## What's in the box
+A correction reruns deterministic checks, records a required note and invalidates the previous
+approval. Approving a flagged invoice requires an explanation. The app supports one local
+user and up to 100 invoices / 200 MB per session; each upload is at most 20 MB and each checked
+PDF at most five pages. The combined upload request is limited to 40 MB.
 
+## Real local agents
+
+Qwen is called over MAX's OpenAI-compatible local HTTP endpoint: `invoice_reader` transcribes,
+`evidence_verifier` checks the transcription, and the read-only **Invoice assistant** answers
+questions from the floating chat in the UI. Rust validates JSON and runs arithmetic, grounding,
+PO matching, duplicate and receipt checks. Verifier concerns only add review requirements.
+Failures never authorize payment or trigger a cloud fallback.
+
+The assistant also accepts general questions with no invoice selected. Selecting an invoice is
+optional and adds a server-built evidence catalog containing extracted fields, deterministic
+findings, matched purchase-order data and current review status. The browser sends the optional
+invoice ID/revision, question and up to three completed conversation pairs; it never supplies the
+invoice evidence. Rust validates every evidence reference returned by the model and rejects stale
+revisions or unsupported citations.
+
+Chat is unavailable only in demo mode or when MAX is offline. If the inference worker is already
+reading an invoice, the question waits for that request to finish and then takes priority over
+queued invoice jobs. Its conversation stays in the browser tab and is not an approval, audit
+entry, email or payment.
+
+Other AI assistants can discover and call these agents through the Rust binary:
+
+```bash
+ai-backend/target/release/invoice-check agents list
+ai-backend/target/release/invoice-check agents doctor
+ai-backend/target/release/invoice-check agents call check_invoice --input-file examples/check-invoice.json
 ```
-app/          Flask web UI (inbox, side-by-side review, decisions, supplier email, CSV export)
-harness/
-  extract.py    PDF text -> structured invoice (Claude via forced tool call; regex baseline)
-  grounding.py  every extracted value must appear in the PDF text
-  checks.py     arithmetic, PO lookup, supplier, duplicates, line matching, price, quantity
-  pipeline.py   orchestration + decision (approve / review / hold)
-  explain.py    supplier query email (template, from the checks' findings only)
-  config.py     model settings + AP tolerances in one readable place
-data/         synthetic POs, goods receipts, payment history, 17 invoice PDFs + ground truth
-evals/        decision/issue/field scoring, fault injection
-tests/        unit tests (incl. LLM contract tests against a fake API)
+
+See [AGENTS.md](AGENTS.md) and the [JSON tool protocol](docs/AGENTS.md). The CLI does not change
+UI decisions. It uses reference payment history; the UI additionally checks its session queue.
+
+## Verify and develop
+
+```bash
+cargo fmt --manifest-path ai-backend/Cargo.toml --check
+cargo clippy --manifest-path ai-backend/Cargo.toml --locked --all-targets -- -D warnings
+cargo test --manifest-path ai-backend/Cargo.toml --locked
+npm ci --prefix frontend
+npm run build --prefix frontend
+cargo run --manifest-path ai-backend/Cargo.toml --locked -- eval
+
+# With MAX running: measures actual model behavior, not fixture/oracle extraction.
+ai-backend/target/release/invoice-check eval --live
 ```
 
-## Real vs. stubbed
+For development use `cargo run --manifest-path ai-backend/Cargo.toml -- serve --demo` and,
+in another terminal, `npm run dev --prefix frontend`. Vite proxies `/api` to Rust on 8080.
+Remove `--demo` to use MAX, which must already be running. `run.py` serves the compiled React build.
 
-| Part | Status |
-|---|---|
-| PDF reading, LLM extraction, grounding, all checks, decision, UI, email draft, evals | **Real** |
-| Purchase orders, goods receipts, payment history | **Stubbed**: JSON files standing in for the ERP |
-| Invoices | **Synthetic**: 17 PDFs in 3 supplier layouts, each discrepancy planted on purpose |
-| ERP posting | **Stubbed**: "Download approved (CSV)" stands in for an ERP import |
-| Sending email | **Stubbed**: the draft is copied to the clipboard; the clerk sends it from their own mail |
-| Users / auth / audit trail | Minimal: one user, decisions + notes logged per invoice in `data/runtime/state.json` |
+The Rust suite covers 17 expected fixture decisions, all 49 injected extraction mistakes,
+HTTP workflow, memory reset/revision conflicts, CSV escaping, and agent contracts with a fake
+HTTP server. Those results do **not** measure Qwen accuracy, GPU performance or memory usage.
+Actual MAX/Qwen evaluation: **10/17 expected decisions, zero unsafe approvals, seven clean
+invoices unnecessarily flagged**. The verifier is overly conservative on formatting; one
+reader output failed numeric validation. See [recorded evidence](evals/results/summary.json)
+and [full live traces](evals/results/live-max.json). This is a development fixture result,
+not a held-out benchmark or a promise of production accuracy.
 
-## Known limitations
+Real invoices, OCR, multiple POs, credit notes, non-USD currencies and multi-user deployment
+remain outside the slice. Reference ERP data and PDFs are synthetic fixtures; the database,
+editing, checking, PDF preview, agent HTTP calls and export are implemented.
 
-- **Scanned or faxed invoices are detected but not read** (sent to "Needs a look" with a clear
-  message). Adding OCR or sending the page image to the model is the obvious next step.
-- **Single currency (USD), one tax rate, one PO per invoice.** Credit notes and invoices that span
-  several POs aren't handled.
-- **The sample set is small (17) and I wrote it.** It shows the checks do what I intended. It is
-  not evidence about real-world supplier invoices. See DESIGN.md → *Reflections*.
-- The queue is a JSON file and a single worker thread. That's fine for one clerk, not for a team.
+See [DESIGN.md](DESIGN.md) for thesis, architecture and tradeoffs. A root [README.mdx](README.mdx)
+provides an MDX-compatible quickstart; this Markdown file is the Git repository's landing page.

@@ -1,0 +1,1791 @@
+{
+  "correct": 10,
+  "mode": "live-max",
+  "results": [
+    {
+      "expected": "approve",
+      "file": "01_halvorsen_clean.pdf",
+      "matches": false,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 3.84750701,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 1.153578814,
+            "status": "completed"
+          }
+        ],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-02",
+          "invoice_number": "HF-10231",
+          "lines": [
+            {
+              "description": "Exterior deck screws 3in, box of 350",
+              "line_total": 370.0,
+              "quantity": 20.0,
+              "sku": "DS-300",
+              "unit_price": 18.5
+            },
+            {
+              "description": "Lag bolts 1/2 x 12in (box of 25)",
+              "line_total": 420.0,
+              "quantity": 10.0,
+              "sku": "LB-512",
+              "unit_price": 42.0
+            },
+            {
+              "description": "Flat washers 1/2in (box of 100)",
+              "line_total": 146.25,
+              "quantity": 15.0,
+              "sku": "WS-050",
+              "unit_price": 9.75
+            }
+          ],
+          "po_number": "PO-45000110",
+          "subtotal": 936.25,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 65.54,
+          "total": 1001.79
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "invoice_date is 2026-10-02 but the printed invoice date is October 2, 2026",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 65.54 but the printed tax amount is $65.54",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "total is 1001.79 but the printed total is $1,001.79",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Exterior deck screws 3in, box of 350",
+              "line": 1,
+              "qty_received": 20.0,
+              "sku": "DS-300",
+              "unit_price": 18.5
+            },
+            {
+              "description": "Lag bolts 1/2 x 12in (box of 25)",
+              "line": 2,
+              "qty_received": 10.0,
+              "sku": "LB-512",
+              "unit_price": 42.0
+            },
+            {
+              "description": "Flat washers 1/2in (box of 100)",
+              "line": 3,
+              "qty_received": 15.0,
+              "sku": "WS-050",
+              "unit_price": 9.75
+            }
+          ],
+          "po_number": "PO-45000110",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
+    },
+    {
+      "expected": "approve",
+      "file": "02_ridgeline_clean.pdf",
+      "matches": false,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": "invalid type: null, expected f64 at line 31 column 22",
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 4.228295953,
+            "status": "failed"
+          }
+        ],
+        "decision": "review",
+        "extraction": null,
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "READER_FAILED",
+            "detail": "The local AI reader failed: invalid type: null, expected f64 at line 31 column 22",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "This document needs attention"
+          }
+        ],
+        "po": null,
+        "supplier_id": null
+      }
+    },
+    {
+      "expected": "review",
+      "file": "03_halvorsen_price_up.pdf",
+      "matches": true,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 3.180489446,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 0.188259625,
+            "status": "completed"
+          }
+        ],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-05",
+          "invoice_number": "HF-10240",
+          "lines": [
+            {
+              "description": "SS-200 Stainless screws #10 x 2in (box of 100)",
+              "line_total": 364.0,
+              "quantity": 10.0,
+              "sku": "SS-200",
+              "unit_price": 36.4
+            },
+            {
+              "description": "HB-100 Hex bolts 3/8 x 4in (box of 50)",
+              "line_total": 423.0,
+              "quantity": 20.0,
+              "sku": "HB-100",
+              "unit_price": 21.15
+            }
+          ],
+          "po_number": "PO-45000112",
+          "subtotal": 787.0,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 55.09,
+          "total": 842.09
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": 15.0,
+            "code": "PRICE_VARIANCE",
+            "detail": "SS-200 Stainless screws #10 x 2in (box of 100): invoice $36.40 each; PO $34.90 each.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Price is above the agreed amount"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Stainless screws #10 x 2in (box of 100)",
+              "line": 1,
+              "qty_received": 10.0,
+              "sku": "SS-200",
+              "unit_price": 34.9
+            },
+            {
+              "description": "Hex bolts 3/8 x 4in (box of 50)",
+              "line": 2,
+              "qty_received": 20.0,
+              "sku": "HB-100",
+              "unit_price": 21.15
+            }
+          ],
+          "po_number": "PO-45000112",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
+    },
+    {
+      "expected": "review",
+      "file": "04_halvorsen_short_delivery.pdf",
+      "matches": true,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 3.06867992,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 1.438789151,
+            "status": "completed"
+          }
+        ],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-04",
+          "invoice_number": "HF-10236",
+          "lines": [
+            {
+              "description": "Exterior deck screws 2.5in, box of 350",
+              "line_total": 486.0,
+              "quantity": 30.0,
+              "sku": "DS-250",
+              "unit_price": 16.2
+            },
+            {
+              "description": "Wedge anchors 3/8 x 3in (box of 25)",
+              "line_total": 328.8,
+              "quantity": 12.0,
+              "sku": "AN-375",
+              "unit_price": 27.4
+            }
+          ],
+          "po_number": "PO-45000111",
+          "subtotal": 814.8,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 57.04,
+          "total": 871.84
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": 109.6,
+            "code": "QTY_EXCEEDS_RECEIVED",
+            "detail": "Wedge anchors 3/8 x 3in (box of 25): billed 12; received 8; previously paid -0; left to bill 8.",
+            "line_index": 1,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Billed for more than received"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "invoice_date is 2026-10-04 but the printed invoice date is October 4, 2026",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 57.04 but the printed tax amount is $57.04",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "subtotal is 814.8 but the printed subtotal is $814.80",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "total is 871.84 but the printed total is $871.84",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Exterior deck screws 2.5in, box of 350",
+              "line": 1,
+              "qty_received": 30.0,
+              "sku": "DS-250",
+              "unit_price": 16.2
+            },
+            {
+              "description": "Wedge anchors 3/8 x 3in (box of 25)",
+              "line": 2,
+              "qty_received": 8.0,
+              "sku": "AN-375",
+              "unit_price": 27.4
+            }
+          ],
+          "po_number": "PO-45000111",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
+    },
+    {
+      "expected": "review",
+      "file": "05_ridgeline_surcharge.pdf",
+      "matches": true,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 3.461679656,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 0.839883395,
+            "status": "completed"
+          }
+        ],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-06",
+          "invoice_number": "RL-55902",
+          "lines": [
+            {
+              "description": "PLY-34 Plywood 3/4 CDX 4x8",
+              "line_total": 1218.75,
+              "quantity": 25.0,
+              "sku": null,
+              "unit_price": 48.75
+            },
+            {
+              "description": "OSB-716 OSB 7/16 4x8",
+              "line_total": 672.0,
+              "quantity": 30.0,
+              "sku": null,
+              "unit_price": 22.4
+            },
+            {
+              "description": "FS-01 Fuel surcharge",
+              "line_total": 35.0,
+              "quantity": 1.0,
+              "sku": null,
+              "unit_price": 35.0
+            }
+          ],
+          "po_number": "4500-0121",
+          "subtotal": 1925.75,
+          "supplier_name": "Ridgeline Lumber & Millwork",
+          "tax": 134.8,
+          "total": 2060.55
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": 672.0,
+            "code": "ITEM_NOT_ON_PO",
+            "detail": "OSB-716 OSB 7/16 4x8",
+            "line_index": 1,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Charge is not on the purchase order"
+          },
+          {
+            "amount_at_stake": 35.0,
+            "code": "ITEM_NOT_ON_PO",
+            "detail": "FS-01 Fuel surcharge",
+            "line_index": 2,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Charge is not on the purchase order"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 134.8 but the printed tax is 134.80",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 134.8 but the printed tax is 7.00% 134.80",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Plywood 3/4in CDX 4x8",
+              "line": 1,
+              "qty_received": 25.0,
+              "sku": "PLY-34",
+              "unit_price": 48.75
+            },
+            {
+              "description": "OSB sheathing 7/16in 4x8",
+              "line": 2,
+              "qty_received": 30.0,
+              "sku": "OSB-716",
+              "unit_price": 22.4
+            }
+          ],
+          "po_number": "PO-45000121",
+          "supplier_id": "S002",
+          "supplier_name": "Ridgeline Lumber & Millwork"
+        },
+        "supplier_id": "S002"
+      }
+    },
+    {
+      "expected": "review",
+      "file": "06_ridgeline_math_error.pdf",
+      "matches": true,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 2.7280121470000003,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 0.477640991,
+            "status": "completed"
+          }
+        ],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-07",
+          "invoice_number": "RL-55911",
+          "lines": [
+            {
+              "description": "TRM-114 Primed pine trim 1x4x16",
+              "line_total": 387.0,
+              "quantity": 20.0,
+              "sku": null,
+              "unit_price": 18.9
+            },
+            {
+              "description": "BB-358 Colonial baseboard 3-5/8 x 16",
+              "line_total": 369.0,
+              "quantity": 15.0,
+              "sku": null,
+              "unit_price": 24.6
+            }
+          ],
+          "po_number": "4500-0122",
+          "subtotal": 756.0,
+          "supplier_name": "Ridgeline Lumber & Millwork",
+          "tax": 52.92,
+          "total": 808.92
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": 9.0,
+            "code": "MATH_ERROR",
+            "detail": "20 × $18.90 = $378.00; printed $387.00.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Line amount does not add up"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 52.92 but the printed tax rate is 7.00%",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Primed pine trim 1x4x16",
+              "line": 1,
+              "qty_received": 20.0,
+              "sku": "TRM-114",
+              "unit_price": 18.9
+            },
+            {
+              "description": "Colonial baseboard 3-5/8in x 16ft",
+              "line": 2,
+              "qty_received": 15.0,
+              "sku": "BB-358",
+              "unit_price": 24.6
+            }
+          ],
+          "po_number": "PO-45000122",
+          "supplier_id": "S002",
+          "supplier_name": "Ridgeline Lumber & Millwork"
+        },
+        "supplier_id": "S002"
+      }
+    },
+    {
+      "expected": "hold",
+      "file": "07_halvorsen_resent_duplicate.pdf",
+      "matches": true,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 2.201655757,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 1.943793437,
+            "status": "completed"
+          }
+        ],
+        "decision": "hold",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-09-15",
+          "invoice_number": "HF-10198",
+          "lines": [
+            {
+              "description": "Hex bolts 3/8 x 4in (box of 50)",
+              "line_total": 211.5,
+              "quantity": 10.0,
+              "sku": "HB-100",
+              "unit_price": 21.15
+            }
+          ],
+          "po_number": "PO-45000105",
+          "subtotal": 211.5,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 14.81,
+          "total": 226.31
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "DUPLICATE_INVOICE",
+            "detail": "Invoice HF-10198 is already in payment history. Check before paying.",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "block",
+            "title": "Invoice already recorded"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "line_total is 211.5 but the printed line total is $211.50",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "unit_price is 21.15 but the printed unit price is $21.15",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "amount is $211.50 but the printed amount is $211.50",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "subtotal is 211.5 but the printed subtotal is $211.50",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 14.81 but the printed tax is $14.81",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "total is 226.31 but the printed total is $226.31",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Hex bolts 3/8 x 4in (box of 50)",
+              "line": 1,
+              "qty_received": 10.0,
+              "sku": "HB-100",
+              "unit_price": 21.15
+            }
+          ],
+          "po_number": "PO-45000105",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
+    },
+    {
+      "expected": "hold",
+      "file": "08_kowalski_no_po.pdf",
+      "matches": true,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 2.821202759,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 0.635682913,
+            "status": "completed"
+          }
+        ],
+        "decision": "hold",
+        "extraction": {
+          "currency": null,
+          "invoice_date": "2026-10-08",
+          "invoice_number": "KH-0412",
+          "lines": [
+            {
+              "description": "6 16d common nails, 50 lb box (item CN-16D)",
+              "line_total": 474.0,
+              "quantity": 1.0,
+              "sku": "CN-16D",
+              "unit_price": 79.0
+            },
+            {
+              "description": "30 Rafter ties RT-7 (item RS-24)",
+              "line_total": 73.5,
+              "quantity": 1.0,
+              "sku": "RS-24",
+              "unit_price": 2.45
+            }
+          ],
+          "po_number": null,
+          "subtotal": 547.5,
+          "supplier_name": "KOWALSKI HARDWARE SUPPLY",
+          "tax": 38.33,
+          "total": 585.83
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "UNSUPPORTED_INVOICE",
+            "detail": "Only positive USD invoices with valid dates and quantities are supported.",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Manual processing required"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "UNCONFIRMED_FIELDS",
+            "detail": "lines[0].quantity, lines[1].quantity",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Values could not be confirmed on the page"
+          },
+          {
+            "amount_at_stake": 395.0,
+            "code": "MATH_ERROR",
+            "detail": "1 × $79.00 = $79.00; printed $474.00.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Line amount does not add up"
+          },
+          {
+            "amount_at_stake": 71.05,
+            "code": "MATH_ERROR",
+            "detail": "1 × $2.45 = $2.45; printed $73.50.",
+            "line_index": 1,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Line amount does not add up"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "PO_NOT_FOUND",
+            "detail": "Confirm the purchase-order number with the supplier or purchasing.",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "block",
+            "title": "No matching purchase order"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "currency is null but the printed total is $585.83",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "po_number is null but the printed invoice does not show a PO number",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": null,
+        "supplier_id": "S003"
+      }
+    },
+    {
+      "expected": "approve",
+      "file": "09_kowalski_clean.pdf",
+      "matches": false,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 3.899968194,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 3.199200683,
+            "status": "completed"
+          }
+        ],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-03",
+          "invoice_number": "KH-0398",
+          "lines": [
+            {
+              "description": "50 galvanized joist hangers 2x6 (item JH-206)",
+              "line_total": 155.0,
+              "quantity": 50.0,
+              "sku": "JH-206",
+              "unit_price": 3.1
+            },
+            {
+              "description": "40 hurricane ties H2.5A (item HT-12)",
+              "line_total": 74.0,
+              "quantity": 40.0,
+              "sku": "HT-12",
+              "unit_price": 1.85
+            },
+            {
+              "description": "10 adjustable 4x4 post bases (item PB-44)",
+              "line_total": 126.0,
+              "quantity": 10.0,
+              "sku": "PB-44",
+              "unit_price": 12.6
+            }
+          ],
+          "po_number": "45000131",
+          "subtotal": 355.0,
+          "supplier_name": "KOWALSKI HARDWARE SUPPLY",
+          "tax": 24.85,
+          "total": 379.85
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "line_total for item JH-206 is 155.0 but the printed line total is $155.00",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "line_total for item HT-12 is 74.0 but the printed line total is $74.00",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "line_total for item PB-44 is 126.0 but the printed line total is $126.00",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "unit_price for item JH-206 is 3.1 but the printed unit price is $3.10",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "unit_price for item HT-12 is 1.85 but the printed unit price is $1.85",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "unit_price for item PB-44 is 12.6 but the printed unit price is $12.60",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "subtotal is 355.0 but the printed subtotal is $355.00",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 24.85 but the printed tax is $24.85",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "total is 379.85 but the printed total is $379.85",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Joist hanger 2x6, galvanized",
+              "line": 1,
+              "qty_received": 50.0,
+              "sku": "JH-206",
+              "unit_price": 3.1
+            },
+            {
+              "description": "Hurricane tie H2.5A",
+              "line": 2,
+              "qty_received": 40.0,
+              "sku": "HT-12",
+              "unit_price": 1.85
+            },
+            {
+              "description": "Post base 4x4, adjustable",
+              "line": 3,
+              "qty_received": 10.0,
+              "sku": "PB-44",
+              "unit_price": 12.6
+            }
+          ],
+          "po_number": "PO-45000131",
+          "supplier_id": "S003",
+          "supplier_name": "Kowalski Hardware Supply"
+        },
+        "supplier_id": "S003"
+      }
+    },
+    {
+      "expected": "review",
+      "file": "10_kowalski_price_up.pdf",
+      "matches": true,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 2.987261781,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 1.856379427,
+            "status": "completed"
+          }
+        ],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-06",
+          "invoice_number": "KH-0405",
+          "lines": [
+            {
+              "description": "6 16d common nails, 50 lb box (item CN-16D)",
+              "line_total": 507.0,
+              "quantity": 6.0,
+              "sku": "CN-16D",
+              "unit_price": 84.5
+            },
+            {
+              "description": "30 rafter ties RT-7 (item RS-24)",
+              "line_total": 73.5,
+              "quantity": 30.0,
+              "sku": "RS-24",
+              "unit_price": 2.45
+            }
+          ],
+          "po_number": "4500 0132",
+          "subtotal": 580.5,
+          "supplier_name": "KOWALSKI HARDWARE SUPPLY",
+          "tax": 40.64,
+          "total": 621.14
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": 33.0,
+            "code": "PRICE_VARIANCE",
+            "detail": "6 16d common nails, 50 lb box (item CN-16D): invoice $84.50 each; PO $79.00 each.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Price is above the agreed amount"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "invoice_date is 2026-10-06 but the printed date is October 6, 2026",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "po_number is 4500 0132 but the printed PO number is 4500 0132",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "supplier_name is KOWALSKI HARDWARE SUPPLY but the printed supplier name is KOWALSKI HARDWARE SUPPLY",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 40.64 but the printed tax amount is $40.64",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "total is 621.14 but the printed total is $621.14",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "16d common nails, 50 lb box",
+              "line": 1,
+              "qty_received": 6.0,
+              "sku": "CN-16D",
+              "unit_price": 79.0
+            },
+            {
+              "description": "Rafter tie RT-7",
+              "line": 2,
+              "qty_received": 30.0,
+              "sku": "RS-24",
+              "unit_price": 2.45
+            }
+          ],
+          "po_number": "PO-45000132",
+          "supplier_id": "S003",
+          "supplier_name": "Kowalski Hardware Supply"
+        },
+        "supplier_id": "S003"
+      }
+    },
+    {
+      "expected": "approve",
+      "file": "11_halvorsen_partial_billing.pdf",
+      "matches": false,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 2.1810388769999998,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 1.427216251,
+            "status": "completed"
+          }
+        ],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-09",
+          "invoice_number": "HF-10252",
+          "lines": [
+            {
+              "description": "Exterior deck screws 3in, box of 350",
+              "line_total": 148.0,
+              "quantity": 8.0,
+              "sku": "DS-300",
+              "unit_price": 18.5
+            }
+          ],
+          "po_number": "PO-45000140",
+          "subtotal": 148.0,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 10.36,
+          "total": 158.36
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "invoice_date is 2026-10-09 but the printed invoice date is October 9, 2026",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 10.36 but the printed tax amount is $10.36",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "unit_price is 18.5 but the printed unit price is $18.50",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "line_total is 148.0 but the printed line total is $148.00",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Exterior deck screws 3in, box of 350",
+              "line": 1,
+              "qty_received": 20.0,
+              "sku": "DS-300",
+              "unit_price": 18.5
+            }
+          ],
+          "po_number": "PO-45000140",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
+    },
+    {
+      "expected": "approve",
+      "file": "12_ridgeline_name_variant.pdf",
+      "matches": false,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 2.585775528,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 0.728027883,
+            "status": "completed"
+          }
+        ],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-09",
+          "invoice_number": "RL-55925",
+          "lines": [
+            {
+              "description": "Pressure-treated 2x4x12",
+              "line_total": 768.0,
+              "quantity": 80.0,
+              "sku": null,
+              "unit_price": 9.6
+            },
+            {
+              "description": "Plywood 3/4 CDX",
+              "line_total": 487.5,
+              "quantity": 10.0,
+              "sku": null,
+              "unit_price": 48.75
+            }
+          ],
+          "po_number": "4500-0123",
+          "subtotal": 1255.5,
+          "supplier_name": "RIDGELINE LUMBER CO.",
+          "tax": 87.89,
+          "total": 1343.39
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 87.89 but the printed tax rate is 7.00%",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 87.89 but the printed tax amount is 87.89",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Pressure-treated lumber 2x4x12",
+              "line": 1,
+              "qty_received": 80.0,
+              "sku": "PT-2412",
+              "unit_price": 9.6
+            },
+            {
+              "description": "Plywood 3/4in CDX 4x8",
+              "line": 2,
+              "qty_received": 10.0,
+              "sku": "PLY-34",
+              "unit_price": 48.75
+            }
+          ],
+          "po_number": "PO-45000123",
+          "supplier_id": "S002",
+          "supplier_name": "Ridgeline Lumber & Millwork"
+        },
+        "supplier_id": "S002"
+      }
+    },
+    {
+      "expected": "approve",
+      "file": "13_halvorsen_missing_sku.pdf",
+      "matches": false,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 2.97261798,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 1.160704338,
+            "status": "completed"
+          }
+        ],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-10",
+          "invoice_number": "HF-10259",
+          "lines": [
+            {
+              "description": "Exterior Deck Screws 3in - Box/350",
+              "line_total": 462.5,
+              "quantity": 25.0,
+              "sku": "Box/350",
+              "unit_price": 18.5
+            },
+            {
+              "description": "LB-512 Lag bolts 1/2 x 12in (box of 25)",
+              "line_total": 252.0,
+              "quantity": 6.0,
+              "sku": "box of 25",
+              "unit_price": 42.0
+            }
+          ],
+          "po_number": "PO-45000113",
+          "subtotal": 714.5,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 50.02,
+          "total": 764.52
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "invoice_date is 2026-10-10 but the printed invoice date is October 10, 2026",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 50.02 but the printed tax amount is $50.02",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "total is 764.52 but the printed total is $764.52",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Exterior deck screws 3in, box of 350",
+              "line": 1,
+              "qty_received": 25.0,
+              "sku": "DS-300",
+              "unit_price": 18.5
+            },
+            {
+              "description": "Lag bolts 1/2 x 12in (box of 25)",
+              "line": 2,
+              "qty_received": 6.0,
+              "sku": "LB-512",
+              "unit_price": 42.0
+            }
+          ],
+          "po_number": "PO-45000113",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
+    },
+    {
+      "expected": "review",
+      "file": "14_halvorsen_two_problems.pdf",
+      "matches": true,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 3.088465867,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 0.186317252,
+            "status": "completed"
+          }
+        ],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-12",
+          "invoice_number": "HF-10263",
+          "lines": [
+            {
+              "description": "SS-200 Stainless screws #10 x 2in (box of 100)",
+              "line_total": 427.2,
+              "quantity": 12.0,
+              "sku": "SS-200",
+              "unit_price": 35.6
+            },
+            {
+              "description": "AN-375 Wedge anchors 3/8 x 3in (box of 25)",
+              "line_total": 274.0,
+              "quantity": 10.0,
+              "sku": "AN-375",
+              "unit_price": 27.4
+            }
+          ],
+          "po_number": "PO-45000114",
+          "subtotal": 701.2,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 49.08,
+          "total": 750.28
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": 8.4,
+            "code": "PRICE_VARIANCE",
+            "detail": "SS-200 Stainless screws #10 x 2in (box of 100): invoice $35.60 each; PO $34.90 each.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Price is above the agreed amount"
+          },
+          {
+            "amount_at_stake": 109.6,
+            "code": "QTY_EXCEEDS_RECEIVED",
+            "detail": "AN-375 Wedge anchors 3/8 x 3in (box of 25): billed 10; received 6; previously paid -0; left to bill 6.",
+            "line_index": 1,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Billed for more than received"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Stainless screws #10 x 2in (box of 100)",
+              "line": 1,
+              "qty_received": 12.0,
+              "sku": "SS-200",
+              "unit_price": 34.9
+            },
+            {
+              "description": "Wedge anchors 3/8 x 3in (box of 25)",
+              "line": 2,
+              "qty_received": 6.0,
+              "sku": "AN-375",
+              "unit_price": 27.4
+            }
+          ],
+          "po_number": "PO-45000114",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
+    },
+    {
+      "expected": "approve",
+      "file": "15_ridgeline_price_down.pdf",
+      "matches": false,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 2.165256686,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 0.46079957,
+            "status": "completed"
+          }
+        ],
+        "decision": "review",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-13",
+          "invoice_number": "RL-55930",
+          "lines": [
+            {
+              "description": "Cedar decking 5/4x6x8",
+              "line_total": 676.0,
+              "quantity": 40.0,
+              "sku": "CD-5408",
+              "unit_price": 16.9
+            }
+          ],
+          "po_number": "4500-0124",
+          "subtotal": 676.0,
+          "supplier_name": "Ridgeline Lumber & Millwork",
+          "tax": 47.32,
+          "total": 723.32
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "PRICE_BELOW_PO",
+            "detail": "Cedar decking 5/4x6x8: $0.40 below the agreed unit price.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "info",
+            "title": "Price is below the PO"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 47.32 but the printed tax is 7.00%",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Cedar decking 5/4x6x8",
+              "line": 1,
+              "qty_received": 40.0,
+              "sku": "CD-5408",
+              "unit_price": 17.3
+            }
+          ],
+          "po_number": "PO-45000124",
+          "supplier_id": "S002",
+          "supplier_name": "Ridgeline Lumber & Millwork"
+        },
+        "supplier_id": "S002"
+      }
+    },
+    {
+      "expected": "hold",
+      "file": "16_halvorsen_reissued.pdf",
+      "matches": true,
+      "result": {
+        "agent_runs": [
+          {
+            "agent": "invoice_reader",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 2.230747574,
+            "status": "completed"
+          },
+          {
+            "agent": "evidence_verifier",
+            "error": null,
+            "model": "Qwen/Qwen3-4B",
+            "provider": "max",
+            "seconds": 3.05177979,
+            "status": "completed"
+          }
+        ],
+        "decision": "hold",
+        "extraction": {
+          "currency": "USD",
+          "invoice_date": "2026-10-01",
+          "invoice_number": "HF-10175",
+          "lines": [
+            {
+              "description": "WS-050 Flat washers 1/2in (box of 100)",
+              "line_total": 195.0,
+              "quantity": 20.0,
+              "sku": "WS-050",
+              "unit_price": 9.75
+            }
+          ],
+          "po_number": "PO-45000106",
+          "subtotal": 195.0,
+          "supplier_name": "Halvorsen Fasteners LLC",
+          "tax": 13.65,
+          "total": 208.65
+        },
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "POSSIBLE_DUPLICATE",
+            "detail": "Same supplier and total as HF-10171 in payment history, dated within 14 days.",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "block",
+            "title": "Possible reissued invoice"
+          },
+          {
+            "amount_at_stake": 195.0,
+            "code": "QTY_EXCEEDS_RECEIVED",
+            "detail": "WS-050 Flat washers 1/2in (box of 100): billed 20; received 20; previously paid 20; left to bill 0.",
+            "line_index": 0,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "Billed for more than received"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "invoice_date is 2026-10-01 but the printed invoice date is October 1, 2026",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "tax is 13.65 but the printed tax amount is $13.65",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "unit_price is 9.75 but the printed unit price is $9.75",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "line_total is 195.0 but the printed line total is $195.00",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "quantity is 20.0 but the printed quantity is 20",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "sku is WS-050 but the printed SKU is WS-050",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "description is WS-050 Flat washers 1/2in (box of 100) but the printed description is WS-050 Flat washers 1/2in (box of 100)",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "subtotal is 195.0 but the printed subtotal is $195.00",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          },
+          {
+            "amount_at_stake": null,
+            "code": "VERIFIER_CONCERN",
+            "detail": "total is 208.65 but the printed total is $208.65",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "AI evidence check needs review"
+          }
+        ],
+        "po": {
+          "lines": [
+            {
+              "description": "Flat washers 1/2in (box of 100)",
+              "line": 1,
+              "qty_received": 20.0,
+              "sku": "WS-050",
+              "unit_price": 9.75
+            }
+          ],
+          "po_number": "PO-45000106",
+          "supplier_id": "S001",
+          "supplier_name": "Halvorsen Fasteners LLC"
+        },
+        "supplier_id": "S001"
+      }
+    },
+    {
+      "expected": "review",
+      "file": "17_scanned_fax.pdf",
+      "matches": true,
+      "result": {
+        "agent_runs": [],
+        "decision": "review",
+        "extraction": null,
+        "extractor": "max",
+        "issues": [
+          {
+            "amount_at_stake": null,
+            "code": "UNREADABLE",
+            "detail": "A page has no readable text. Request a digital PDF or review manually.",
+            "line_index": null,
+            "next_step": "Compare with the original document and resolve with purchasing or the supplier.",
+            "severity": "review",
+            "title": "This document needs attention"
+          }
+        ],
+        "po": null,
+        "supplier_id": null
+      }
+    }
+  ],
+  "total": 17,
+  "unsafe_approvals": 0
+}
